@@ -1,1 +1,30 @@
-
+data:
+  features: 73
+  source: UCI German Credit Dataset
+  target: Risk (0=Bad, 1=Good)
+  total_samples: 1000
+model:
+  algorithm: Random Forest Classifier
+  features: 73
+  max_depth: 15
+  n_estimators: 100
+  overfitting_gap: 0.22624999999999995
+  test_accuracy: 0.765
+  train_accuracy: 0.99125
+  version: final
+performance:
+  false_negatives: 31
+  false_positives: 16
+  recall_good: 0.48333333333333334
+  test_accuracy: 0.765
+  true_negatives: 124
+  true_positives: 29
+project:
+  author: NBE Credit Risk Team
+  created: '2026-02-16'
+  name: NBE Credit Risk Intelligence
+  version: '3.0'
+scoring_thresholds:
+  high_risk: 0.0
+  low_risk: 0.7
+  medium_risk: 0.5
