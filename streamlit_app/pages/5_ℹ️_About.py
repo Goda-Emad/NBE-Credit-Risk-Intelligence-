@@ -2,12 +2,13 @@ import streamlit as st
 
 st.set_page_config(page_title="NBE Credit Risk - About", page_icon="ℹ️", layout="wide")
 
-# --- CSS Glassmorphism + Dark Green Background ---
+# --- CSS Glassmorphism + Dark Green Background + تحسين النص ---
 st.markdown("""
 <style>
 body {
     background: linear-gradient(135deg, #004d1a, #006622);
     color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .glass-card {
     background: rgba(255, 255, 255, 0.08);
@@ -17,40 +18,40 @@ body {
     margin-bottom: 25px;
     color: white;
 }
-h1 { font-size:36px; font-weight:bold; color:white; }
-h2 { font-size:28px; font-weight:bold; color:white; }
-h3 { font-size:22px; font-weight:bold; color:white; }
-p, li { font-size:16px; color:#f1f1f1; }
+h1 { font-size:36px; font-weight:bold; color:white; text-align:center; margin-bottom:10px; }
+h2 { font-size:28px; font-weight:bold; color:white; margin-top:20px; margin-bottom:10px; }
+h3 { font-size:22px; font-weight:bold; color:white; margin-top:15px; }
+p, li { font-size:16px; color:#f1f1f1; line-height:1.6; }
 .button-link {
     width:100%; padding:10px; font-weight:bold; border:none; border-radius:8px; cursor:pointer; margin-bottom:10px;
 }
 .github-btn { background-color:#24292e; color:white; }
 .linkedin-btn { background-color:#0077b5; color:white; }
-.logo { display:block; margin-left:auto; margin-right:auto; width:200px; margin-bottom:25px; }
+.logo { display:block; margin-left:auto; margin-right:auto; width:220px; margin-bottom:25px; }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
-# --- Logo from GitHub (guaranteed to work on Streamlit Cloud) ---
+# --- Logo من GitHub لضمان ظهور كامل ---
 st.image(
     "https://raw.githubusercontent.com/Goda-Emad/NBE-Credit-Risk-Intelligence-/main/assets/nbe_branding/NBE_logo.png",
-    width=200
+    width=220
 )
 
-# --- Title ---
-st.title("ℹ️ About NBE Credit Risk Intelligence")
+# --- العنوان الرئيسي ---
+st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
 # --- Project Overview ---
 st.markdown("""
 ### 🎯 Project Overview
-The **NBE Credit Risk Intelligence Platform** is an AI-driven system designed to automate 
-credit application assessment processes for the **National Bank of Egypt (NBE)**, 
-enhancing accuracy and efficiency using advanced Machine Learning techniques.
+The **NBE Credit Risk Intelligence Platform** is an AI-driven system that modernizes 
+credit application assessment for the **National Bank of Egypt (NBE)**.  
+It automates decision-making with **high accuracy** and provides **real-time risk insights**.
 """, unsafe_allow_html=True)
 
-# --- Technical Specs ---
+# --- Technical Specifications ---
 st.markdown("""
 ### 🔧 Technical Specifications
 - **Model:** Random Forest Classifier (v3.0)  
