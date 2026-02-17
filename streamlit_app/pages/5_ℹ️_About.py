@@ -1,4 +1,5 @@
 import streamlit as st
+from pathlib import Path
 
 st.set_page_config(page_title="NBE Credit Risk - About", page_icon="ℹ️", layout="wide")
 
@@ -7,7 +8,7 @@ st.set_page_config(page_title="NBE Credit Risk - About", page_icon="ℹ️", lay
 # =============================
 st.markdown("""
 <style>
-/* Dark Green Gradient Background */
+/* Background Gradient Dark Green */
 .stApp {
     background: linear-gradient(135deg, #004d1a, #006622);
     background-attachment: fixed;
@@ -23,6 +24,8 @@ st.markdown("""
     box-shadow: 0 8px 32px rgba(0,0,0,0.25);
     color: white;
 }
+
+/* Titles */
 h1 { font-size: 36px !important; font-weight: bold; color: #ffffff !important; }
 h2 { font-size: 28px !important; font-weight: bold; color: #ffffff !important; }
 h3 { font-size: 22px !important; font-weight: bold; color: #ffffff !important; }
@@ -74,25 +77,28 @@ a button:hover { opacity: 0.85; transform: scale(1.02); }
 """, unsafe_allow_html=True)
 
 # =============================
-# Content
+# Path to local logo
 # =============================
+BASE_DIR = Path(__file__).resolve().parent.parent  # من pages للـ root
+logo_path = BASE_DIR / "assets" / "nbe_branding" / "NBE_logo.png"
+
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
-# **Official NBE Logo**
-st.markdown(
-    '<img src="https://upload.wikimedia.org/wikipedia/commons/5/52/NBE_logo.png" class="logo">',
-    unsafe_allow_html=True
-)
+# Display Logo
+st.image(str(logo_path), use_column_width=False, width=200)
 
+# Title
 st.title("ℹ️ About NBE Credit Risk Intelligence")
 st.markdown("---")
 
+# Project Overview
 st.markdown("""
 ### 🎯 Project Overview
 The **NBE Credit Risk Intelligence Platform** is an AI-driven system designed to modernize 
 credit evaluation processes for the banking sector.
 """, unsafe_allow_html=True)
 
+# Technical Specifications
 st.markdown("""
 ### 🔧 Technical Specifications
 - **Model:** Random Forest Classifier  
@@ -112,7 +118,7 @@ with col2:
 with col3:
     st.markdown('<div class="kpi-card"><div class="kpi-number">76.5%</div><div class="kpi-label">Model Accuracy</div></div>', unsafe_allow_html=True)
 
-# Capabilities with Icons
+# Core Capabilities
 st.markdown("### 📊 Core Capabilities")
 capabilities = [
     {"icon": "https://img.icons8.com/ios-filled/50/ffffff/automatic.png", "text": "Automated Risk Assessment"},
@@ -122,10 +128,11 @@ capabilities = [
 for cap in capabilities:
     st.markdown(f'<div class="capability"><img src="{cap["icon"]}"><p>{cap["text"]}</p></div>', unsafe_allow_html=True)
 
+# Decision Architecture
 st.markdown("### 🏗️ Decision Architecture")
 st.code("Data Input → Feature Engineering → Random Forest → Risk Score → Decision", language="text")
 
-# Links
+# Professional Links
 st.markdown("### 🔗 Connect with Me")
 st.markdown("""
 <a href="https://github.com/Goda-Emad/NBE-Credit-Risk-Intelligence-" target="_blank">
@@ -136,6 +143,7 @@ st.markdown("""
 </a>
 """, unsafe_allow_html=True)
 
+# Footer
 st.markdown("""
 ### 👥 Lead Developer
 **Eng. Goda Emad**  
