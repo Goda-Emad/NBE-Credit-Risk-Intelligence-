@@ -14,12 +14,12 @@ body, .stApp {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* صندوق الشعار الأبيض */
+/* صندوق الشعار الأبيض كبير وواسع */
 .logo-card {
     background: white;
-    border-radius: 15px;
-    padding: 20px;
-    width: fit-content;
+    border-radius: 20px;
+    padding: 30px 40px;
+    width: 400px;  /* حجم مناسب للشعار */
     margin-left:auto;
     margin-right:auto;
     margin-bottom:20px;
@@ -68,18 +68,17 @@ logo_path = Path(__file__).parents[2] / "assets" / "nbe_branding" / "NBE_logo.pn
 
 if logo_path.is_file():
     st.markdown('<div class="logo-card">', unsafe_allow_html=True)
-    st.image(str(logo_path), width=180)
+    st.image(str(logo_path), width=200)
     st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.error(f"Logo file not found! Check the path:\n{logo_path}")
 
-# --- العنوان الرئيسي ---
+# --- العنوان الرئيسي فوق باقي الصفحة ---
 st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
 
 # --- محتوى الصفحة ---
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
-# Project Overview
 st.markdown("""
 ### 🎯 Project Overview
 The **NBE Credit Risk Intelligence Platform** is an AI-driven system that modernizes 
@@ -87,23 +86,21 @@ credit application assessment for the **National Bank of Egypt (NBE)**.
 It automates decision-making with **high accuracy** and provides **real-time risk insights**.
 """, unsafe_allow_html=True)
 
-# KPIs Cards
+# KPIs
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.markdown('<div class="kpi"><h3>Accuracy</h3><p>76.5%</p></div>', unsafe_allow_html=True)
+    st.markdown('<h3>Accuracy</h3><p>76.5%</p>', unsafe_allow_html=True)
 with col2:
-    st.markdown('<div class="kpi"><h3>Engineered Features</h3><p>73</p></div>', unsafe_allow_html=True)
+    st.markdown('<h3>Features</h3><p>73</p>', unsafe_allow_html=True)
 with col3:
-    st.markdown('<div class="kpi"><h3>Version</h3><p>3.0</p></div>', unsafe_allow_html=True)
+    st.markdown('<h3>Version</h3><p>3.0</p>', unsafe_allow_html=True)
 
-# Technical Specs
 st.markdown("""
 ### 🔧 Technical Specifications
 - **Model:** Random Forest Classifier (v3.0)  
 - **Dataset:** German Credit Risk (1,000 applications)
 """, unsafe_allow_html=True)
 
-# Capabilities
 st.markdown("""
 ### 📊 Capabilities
 1. **Automated Risk Assessment:** Real-time scoring & probability-based recommendations.  
@@ -111,12 +108,10 @@ st.markdown("""
 3. **Model Monitoring:** Feature importance tracking & false negatives analysis.
 """, unsafe_allow_html=True)
 
-# Architecture
 st.markdown("""
 ### 🏗️ Decision Architecture
 """, unsafe_allow_html=True)
 
-# Team & Contact
 st.markdown("""
 ### 👥 Team
 **Credit Risk Analytics Team**  
@@ -139,7 +134,6 @@ st.markdown("""
 </a>
 """, unsafe_allow_html=True)
 
-# Documentation & License
 st.markdown("""
 ### 📚 Documentation
 - Model Card: `docs/model_card.md`  
