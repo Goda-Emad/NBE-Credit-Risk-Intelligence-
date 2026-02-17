@@ -63,14 +63,15 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- شعار البنك ---
-logo_path = Path(__file__).parents[1] / "assets" / "nbe_branding" / "NBE_logo.png"
+# --- شعار البنك (مسار مصحح) ---
+logo_path = Path(__file__).parents[2] / "assets" / "nbe_branding" / "NBE_logo.png"
+
 if logo_path.is_file():
     st.markdown('<div class="logo-card">', unsafe_allow_html=True)
     st.image(str(logo_path), width=180)
     st.markdown('</div>', unsafe_allow_html=True)
 else:
-    st.warning("Logo file not found! Check the path.")
+    st.error(f"Logo file not found! Check the path:\n{logo_path}")
 
 # --- العنوان الرئيسي ---
 st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
