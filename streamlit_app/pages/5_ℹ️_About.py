@@ -5,11 +5,14 @@ st.set_page_config(page_title="NBE Credit Risk - About", page_icon="ℹ️", lay
 # --- CSS شامل لتنسيق الصفحة ---
 st.markdown("""
 <style>
+/* خلفية عامة Dark Green */
 body, .stApp {
-    background-color: #004d1a !important;  /* Dark Green */
+    background-color: #004d1a !important;  
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* Glass Card */
 .glass-card {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(14px);
@@ -18,9 +21,22 @@ body, .stApp {
     margin-bottom: 25px;
     color: white;
 }
-h1 { font-size:38px; font-weight:bold; text-align:center; margin-bottom:15px; }
-h2 { font-size:28px; font-weight:bold; margin-top:20px; margin-bottom:10px; }
-h3 { font-size:22px; font-weight:bold; margin-top:15px; }
+
+/* الشعار على خلفية بيضاء */
+.logo-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: fit-content;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:25px;
+}
+
+/* العناوين */
+h1 { font-size:38px; font-weight:bold; text-align:center; margin-bottom:15px; color:#b3ff99; }
+h2 { font-size:28px; font-weight:bold; margin-top:20px; margin-bottom:10px; color:#b3ff99; }
+h3 { font-size:22px; font-weight:bold; margin-top:15px; color:#b3ff99; }
 p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 
 /* أزرار */
@@ -30,9 +46,6 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 .github-btn { background-color:#24292e; color:white; }
 .linkedin-btn { background-color:#0077b5; color:white; }
 
-/* الشعار */
-.logo { display:block; margin-left:auto; margin-right:auto; width:220px; margin-bottom:25px; }
-
 /* KPIs Cards */
 .kpi {
     background: rgba(255,255,255,0.15);
@@ -41,18 +54,21 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
     text-align: center;
     margin: 5px;
 }
-.kpi h3 { font-size:22px; margin-bottom:5px; color:white; }
+.kpi h3 { font-size:22px; margin-bottom:5px; color:#b3ff99; }
 .kpi p { font-size:20px; font-weight:bold; color:#00ff99; }
 </style>
 """, unsafe_allow_html=True)
 
+# --- Card Glass ---
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
-# --- Logo ---
+# --- Logo on White background ---
+st.markdown('<div class="logo-card">', unsafe_allow_html=True)
 st.image(
     "https://raw.githubusercontent.com/Goda-Emad/NBE-Credit-Risk-Intelligence-/main/assets/nbe_branding/NBE_logo.png",
     width=220
 )
+st.markdown('</div>', unsafe_allow_html=True)
 
 # --- Title ---
 st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
@@ -66,7 +82,7 @@ credit application assessment for the **National Bank of Egypt (NBE)**.
 It automates decision-making with **high accuracy** and provides **real-time risk insights**.
 """, unsafe_allow_html=True)
 
-# --- KPIs Cards (row) ---
+# --- KPIs Cards ---
 col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown('<div class="kpi"><h3>Accuracy</h3><p>76.5%</p></div>', unsafe_allow_html=True)
