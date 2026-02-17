@@ -1,5 +1,7 @@
 import streamlit as st
+from pathlib import Path
 
+# --- إعداد الصفحة ---
 st.set_page_config(page_title="NBE Credit Risk - About", page_icon="ℹ️", layout="wide")
 
 # --- CSS لتنسيق الصفحة ---
@@ -61,18 +63,19 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- الشعار فوق العنوان ---
-st.markdown('<div class="logo-card">', unsafe_allow_html=True)
-st.image(
-    "assets/nbe_branding/NBE_logo_white.png",
-    width=180
-)
-st.markdown('</div>', unsafe_allow_html=True)
+# --- شعار البنك ---
+logo_path = Path(__file__).parents[1] / "assets" / "nbe_branding" / "NBE_logo.png"
+if logo_path.is_file():
+    st.markdown('<div class="logo-card">', unsafe_allow_html=True)
+    st.image(str(logo_path), width=180)
+    st.markdown('</div>', unsafe_allow_html=True)
+else:
+    st.warning("Logo file not found! Check the path.")
 
-# --- العنوان الرئيسي أعلى الصفحة ---
+# --- العنوان الرئيسي ---
 st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
 
-# --- محتوى الصفحة في Glass Card ---
+# --- محتوى الصفحة ---
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
 # Project Overview
