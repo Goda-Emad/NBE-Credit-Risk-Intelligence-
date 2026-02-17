@@ -7,39 +7,39 @@ st.markdown("""
 <style>
 /* خلفية عامة Dark Green */
 body, .stApp {
-    background-color: #004d1a !important;  
+    background-color: #004d1a !important;
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Card شفافة للمحتوى */
-.glass-card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(14px);
-    border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 25px;
-    color: white;
-}
-
-/* Card للوجو على خلفية بيضاء */
+/* صندوق الشعار الأبيض */
 .logo-card {
     background: white;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 20px;
     width: fit-content;
     margin-left:auto;
     margin-right:auto;
-    margin-bottom:25px;
+    margin-bottom:20px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* العناوين */
-h1 { font-size:40px; font-weight:bold; text-align:center; margin-bottom:25px; color:#b3ff99; }
+/* العنوان في أعلى يمين الصفحة */
+h1 {
+    font-size: 38px;
+    font-weight: bold;
+    color: #b3ff99;
+    text-align: right;
+    margin-bottom: 25px;
+}
+
+/* العناوين الفرعية */
 h2 { font-size:28px; font-weight:bold; margin-top:20px; margin-bottom:10px; color:#b3ff99; }
 h3 { font-size:22px; font-weight:bold; margin-top:15px; color:#b3ff99; }
+
+/* نصوص الفقرة */
 p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 
 /* أزرار */
@@ -59,19 +59,29 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 }
 .kpi h3 { font-size:22px; margin-bottom:5px; color:#b3ff99; }
 .kpi p { font-size:20px; font-weight:bold; color:#00ff99; }
+
+/* Glass card محتوى */
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    color: white;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# --- العنوان الرئيسي في أول سطر ---
-st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
-
-# --- Logo على خلفية بيضاء واضحة ---
+# --- الشعار فوق العنوان ---
 st.markdown('<div class="logo-card">', unsafe_allow_html=True)
 st.image(
-    "https://raw.githubusercontent.com/Goda-Emad/NBE-Credit-Risk-Intelligence-/main/assets/nbe_branding/NBE_logo.png",
-    width=220
+    "https://raw.githubusercontent.com/Goda-Emad/NBE-Credit-Risk-Intelligence-/main/assets/nbe_branding/NBE_logo_white.png",
+    width=180
 )
 st.markdown('</div>', unsafe_allow_html=True)
+
+# --- العنوان الرئيسي أعلى يمين الصفحة ---
+st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
 
 # --- محتوى الصفحة في Glass Card ---
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
