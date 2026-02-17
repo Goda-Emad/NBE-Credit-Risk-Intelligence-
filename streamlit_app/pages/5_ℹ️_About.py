@@ -26,13 +26,13 @@ body, .stApp {
     align-items: center;
 }
 
-/* العنوان في أعلى يمين الصفحة */
+/* العنوان الرئيسي */
 h1 {
-    font-size: 38px;
+    font-size: 36px;
     font-weight: bold;
     color: #b3ff99;
-    text-align: right;
     margin-bottom: 25px;
+    text-align: center;
 }
 
 /* العناوين الفرعية */
@@ -49,17 +49,6 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 .github-btn { background-color:#24292e; color:white; }
 .linkedin-btn { background-color:#0077b5; color:white; }
 
-/* KPIs Cards */
-.kpi {
-    background: rgba(255,255,255,0.15);
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    margin: 5px;
-}
-.kpi h3 { font-size:22px; margin-bottom:5px; color:#b3ff99; }
-.kpi p { font-size:20px; font-weight:bold; color:#00ff99; }
-
 /* Glass card محتوى */
 .glass-card {
     background: rgba(255, 255, 255, 0.08);
@@ -75,12 +64,12 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 # --- الشعار فوق العنوان ---
 st.markdown('<div class="logo-card">', unsafe_allow_html=True)
 st.image(
-    "https://raw.githubusercontent.com/Goda-Emad/NBE-Credit-Risk-Intelligence-/main/assets/nbe_branding/NBE_logo_white.png",
+    "assets/nbe_branding/NBE_logo_white.png",
     width=180
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- العنوان الرئيسي أعلى يمين الصفحة ---
+# --- العنوان الرئيسي أعلى الصفحة ---
 st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
 
 # --- محتوى الصفحة في Glass Card ---
