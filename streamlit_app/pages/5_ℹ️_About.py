@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(page_title="NBE Credit Risk - About", page_icon="ℹ️", layout="wide")
 
-# --- CSS شامل لتنسيق الصفحة ---
+# --- CSS لتنسيق الصفحة ---
 st.markdown("""
 <style>
 /* خلفية عامة Dark Green */
@@ -12,7 +12,7 @@ body, .stApp {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Glass Card */
+/* Card شفافة للمحتوى */
 .glass-card {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(14px);
@@ -22,7 +22,7 @@ body, .stApp {
     color: white;
 }
 
-/* الشعار على خلفية بيضاء */
+/* Card للوجو على خلفية بيضاء */
 .logo-card {
     background: white;
     border-radius: 20px;
@@ -31,10 +31,13 @@ body, .stApp {
     margin-left:auto;
     margin-right:auto;
     margin-bottom:25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* العناوين */
-h1 { font-size:38px; font-weight:bold; text-align:center; margin-bottom:15px; color:#b3ff99; }
+h1 { font-size:40px; font-weight:bold; text-align:center; margin-bottom:25px; color:#b3ff99; }
 h2 { font-size:28px; font-weight:bold; margin-top:20px; margin-bottom:10px; color:#b3ff99; }
 h3 { font-size:22px; font-weight:bold; margin-top:15px; color:#b3ff99; }
 p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
@@ -59,10 +62,10 @@ p, li { font-size:18px; line-height:1.6; color:#f1f1f1; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- Card Glass ---
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+# --- العنوان الرئيسي في أول سطر ---
+st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
 
-# --- Logo on White background ---
+# --- Logo على خلفية بيضاء واضحة ---
 st.markdown('<div class="logo-card">', unsafe_allow_html=True)
 st.image(
     "https://raw.githubusercontent.com/Goda-Emad/NBE-Credit-Risk-Intelligence-/main/assets/nbe_branding/NBE_logo.png",
@@ -70,11 +73,10 @@ st.image(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- Title ---
-st.markdown("<h1>ℹ️ About NBE Credit Risk Intelligence</h1>", unsafe_allow_html=True)
-st.markdown("---")
+# --- محتوى الصفحة في Glass Card ---
+st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
-# --- Project Overview ---
+# Project Overview
 st.markdown("""
 ### 🎯 Project Overview
 The **NBE Credit Risk Intelligence Platform** is an AI-driven system that modernizes 
@@ -82,7 +84,7 @@ credit application assessment for the **National Bank of Egypt (NBE)**.
 It automates decision-making with **high accuracy** and provides **real-time risk insights**.
 """, unsafe_allow_html=True)
 
-# --- KPIs Cards ---
+# KPIs Cards
 col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown('<div class="kpi"><h3>Accuracy</h3><p>76.5%</p></div>', unsafe_allow_html=True)
@@ -91,14 +93,14 @@ with col2:
 with col3:
     st.markdown('<div class="kpi"><h3>Version</h3><p>3.0</p></div>', unsafe_allow_html=True)
 
-# --- Technical Specs ---
+# Technical Specs
 st.markdown("""
 ### 🔧 Technical Specifications
 - **Model:** Random Forest Classifier (v3.0)  
 - **Dataset:** German Credit Risk (1,000 applications)
 """, unsafe_allow_html=True)
 
-# --- Capabilities ---
+# Capabilities
 st.markdown("""
 ### 📊 Capabilities
 1. **Automated Risk Assessment:** Real-time scoring & probability-based recommendations.  
@@ -106,12 +108,12 @@ st.markdown("""
 3. **Model Monitoring:** Feature importance tracking & false negatives analysis.
 """, unsafe_allow_html=True)
 
-# --- Architecture ---
+# Architecture
 st.markdown("""
 ### 🏗️ Decision Architecture
 """, unsafe_allow_html=True)
 
-# --- Team & Contact ---
+# Team & Contact
 st.markdown("""
 ### 👥 Team
 **Credit Risk Analytics Team**  
@@ -123,7 +125,7 @@ st.markdown("""
 - **Location:** Cairo, Egypt 🇪🇬
 """, unsafe_allow_html=True)
 
-# --- Professional Links ---
+# Professional Links
 st.markdown("""
 ### 🔗 Professional Links
 <a href="https://github.com/Goda-Emad/NBE-Credit-Risk-Intelligence-" target="_blank">
@@ -134,7 +136,7 @@ st.markdown("""
 </a>
 """, unsafe_allow_html=True)
 
-# --- Documentation & License ---
+# Documentation & License
 st.markdown("""
 ### 📚 Documentation
 - Model Card: `docs/model_card.md`  
