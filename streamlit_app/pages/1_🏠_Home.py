@@ -1,6 +1,6 @@
 """
 NBE Credit Risk Intelligence - Home Page
-Professional UI with Real NBE Banner & Logo
+Professional UI with Real NBE Banner
 """
 
 import streamlit as st
@@ -36,10 +36,8 @@ def get_image_base64(image_path):
 base_path = Path("assets/nbe_branding")
 
 banner_file = base_path / "banner.png"
-logo_file = base_path / "nbe_logo.jpg"
 
 banner_b64 = get_image_base64(banner_file) if banner_file.exists() else None
-logo_b64 = get_image_base64(logo_file) if logo_file.exists() else None
 
 # ============================================================
 # Custom CSS
@@ -61,12 +59,12 @@ st.markdown("""
 .hero-title {
     font-size: 48px;
     font-weight: bold;
-    margin-top: 20px;
+    margin: 0;
 }
 
 .hero-subtitle {
     font-size: 20px;
-    margin-bottom: 30px;
+    margin-top: 10px;
 }
 
 .section-title {
@@ -93,31 +91,26 @@ footer {
 """, unsafe_allow_html=True)
 
 # ============================================================
-# Hero Section
+# HERO SECTION - Banner + Title + Subtitle
 # ============================================================
 
 if banner_b64:
     st.markdown(
         f"""
         <div class="hero-container">
-            <img src="data:image/png;base64,{banner_b64}" width="100%">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+            <!-- Banner Image -->
+            <img src="data:image/png;base64,{banner_b64}" class="banner-img" alt="NBE Banner" style="width:100%; border-radius:20px; box-shadow:0 15px 50px rgba(0,0,0,0.4);">
 
-st.markdown("<div class='hero-title'>NBE Credit Risk Intelligence</div>", unsafe_allow_html=True)
-st.markdown("<div class='hero-subtitle'>AI-Powered Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
-
-# ============================================================
-# Logo
-# ============================================================
-
-if logo_b64:
-    st.markdown(
-        f"""
-        <div style="text-align:center;">
-            <img src="data:image/jpg;base64,{logo_b64}" width="180">
+            <!-- Overlay Title & Subtitle -->
+            <div style="
+                position: absolute;
+                top: 40%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            ">
+                <div class='hero-title'>NBE Credit Risk Intelligence</div>
+                <div class='hero-subtitle'>AI-Powered Credit Risk Analytics Platform</div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True
@@ -164,112 +157,6 @@ st.markdown("""
 © 2026 National Bank of Egypt - Credit Risk Intelligence System
 </footer>
 """, unsafe_allow_html=True)
-
-# ============================================================
-# CSS - Professional NBE Dark Green Theme
-# ============================================================
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cairo:wght@400;600;700&display=swap');
-
-/* Root Variables */
-:root {
-    --nbe-dark:    #003d28;
-    --nbe-green:   #006341;
-    --nbe-light:   #008a57;
-    --nbe-gold:    #D4AF37;
-    --nbe-cream:   #f9f6f0;
-    --nbe-white:   #ffffff;
-    --shadow:      0 8px 32px rgba(0,61,40,0.18);
-}
-
-/* Global */
-html, body, [class*="css"] {
-    font-family: 'Cairo', sans-serif;
-    background-color: var(--nbe-dark) !important;
-    color: var(--nbe-white) !important;
-}
-
-/* Hide Streamlit defaults */
-#MainMenu, footer, header { visibility: hidden; }
-.block-container { padding: 0 2rem 2rem !important; }
-
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #002a1c 0%, #003d28 100%) !important;
-    border-right: 1px solid var(--nbe-gold);
-}
-[data-testid="stSidebar"] * { color: var(--nbe-white) !important; }
-[data-testid="stSidebar"] .stRadio label {
-    background: rgba(255,255,255,0.05);
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin: 4px 0;
-    transition: all 0.3s;
-}
-[data-testid="stSidebar"] .stRadio label:hover {
-    background: rgba(212,175,55,0.2);
-    border-left: 3px solid var(--nbe-gold);
-}
-
-/* Metrics */
-[data-testid="stMetricValue"] {
-    color: var(--nbe-gold) !important;
-    font-size: 2rem !important;
-    font-weight: 700 !important;
-}
-[data-testid="stMetricLabel"] { color: #aaa !important; }
-[data-testid="stMetricDelta"] { color: #4ade80 !important; }
-
-/* Buttons */
-.stButton > button {
-    background: linear-gradient(135deg, var(--nbe-gold), #b8962e) !important;
-    color: var(--nbe-dark) !important;
-    font-weight: 700 !important;
-    font-family: 'Cairo', sans-serif !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 12px 28px !important;
-    font-size: 16px !important;
-    transition: all 0.3s !important;
-    box-shadow: 0 4px 15px rgba(212,175,55,0.3) !important;
-}
-.stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(212,175,55,0.5) !important;
-}
-
-/* Divider */
-hr { border-color: rgba(212,175,55,0.3) !important; }
-
-/* Banner Image */
-.banner-img {
-    width: 100%;
-    height: auto;
-    border-radius: 20px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.4);
-    margin-bottom: 30px;
-}
-
-/* Logo styles */
-.nbe-logo {
-    width: 100px;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(212,175,55,0.3);
-}
-</style>
-""", unsafe_allow_html=True)
-
-# ============================================================
-# BANNER IMAGE (Full Width)
-# ============================================================
-if banner_b64:
-    st.markdown(f"""
-    <div style="margin: 20px 0 30px;">
-        <img src="data:image/png;base64,{banner_b64}" class="banner-img" alt="NBE Banner">
-    </div>
-    """, unsafe_allow_html=True)
 
 # ============================================================
 # HERO SECTION WITH REAL NBE LOGO
