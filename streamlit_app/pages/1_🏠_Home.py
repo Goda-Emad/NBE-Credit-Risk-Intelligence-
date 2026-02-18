@@ -328,69 +328,66 @@ st.markdown(f"""
         border: 3px solid rgba(212,175,55,0.15);
     "></div>
 
-    <!-- Title Section -->
-    <div style="margin-bottom: 20px;">
-        <div style="
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            color: var(--nbe-gold);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            font-weight: 700;
-        ">{t['subtitle']}</div>
-        <div style="
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            font-weight: 900;
-            color: var(--nbe-dark-green);
-            line-height: 1.2;
-            margin-bottom: 20px;
-        ">{t['title']}</div>
-    </div>
-
-    <!-- Description -->
-    <p style="
-        color: var(--nbe-gray);
-        font-size: 18px;
-        max-width: 850px;
-        line-height: 1.9;
-        margin: 0 {'auto 0 0' if lang == 'ar' else '0 0 auto'} 30px;
-        font-weight: 500;
-    ">
-        {t['description']}
-    </p>
-
-    <!-- Badges -->
-    <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: {'flex-start' if lang == 'ar' else 'flex-start'};">
-        <span style="background:rgba(0,99,65,0.1); border:2px solid rgba(0,99,65,0.3);
-              color:var(--nbe-dark-green); padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-            ✅ {t['badge_cbe']}
-        </span>
-        <span style="background:rgba(74,222,128,0.15); border:2px solid rgba(74,222,128,0.4);
-              color:#15803d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-            🤖 {t['badge_ai']}
-        </span>
-        <span style="background:rgba(59,130,246,0.15); border:2px solid rgba(59,130,246,0.4);
-              color:#1d4ed8; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-            ⚡ {t['badge_realtime']}
-        </span>
-        <span style="background:rgba(168,85,247,0.15); border:2px solid rgba(168,85,247,0.4);
-              color:#7c3aed; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-            🔒 {t['badge_secure']}
-        </span>
-        <span style="background:rgba(212,175,55,0.15); border:2px solid rgba(212,175,55,0.5);
-              color:#92400e; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-            📊 {t['badge_features']}
-        </span>
-        <span style="background:rgba(236,72,153,0.15); border:2px solid rgba(236,72,153,0.4);
-              color:#be185d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-            🌲 {t['badge_trees']}
-        </span>
-    </div>
+<!-- Title Section -->
+<div style="margin-bottom: 20px;">
+    <div style="
+        font-family: 'Cairo', sans-serif;
+        font-size: 14px;
+        color: var(--nbe-gold);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-weight: 700;
+    ">{t['subtitle']}</div>
+    <div style="
+        font-family: 'Playfair Display', serif;
+        font-size: 48px;
+        font-weight: 900;
+        color: var(--nbe-dark-green);
+        line-height: 1.2;
+        margin-bottom: 20px;
+    ">{t['title']}</div>
 </div>
-""", unsafe_allow_html=True)
 
+<!-- Description -->
+<p style="
+    color: var(--nbe-gray);
+    font-size: 18px;
+    max-width: 850px;
+    line-height: 1.9;
+    margin: 0 0 30px {'auto 0' if lang == 'ar' else '0'};
+    font-weight: 500;
+">
+    {t['description']}
+</p>
+
+<!-- Badges -->
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: {'flex-start' if lang == 'ar' else 'flex-start'};">
+    <span style="background:rgba(0,99,65,0.1); border:2px solid rgba(0,99,65,0.3);
+          color:var(--nbe-dark-green); padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+        ✅ {t['badge_cbe']}
+    </span>
+    <span style="background:rgba(74,222,128,0.15); border:2px solid rgba(74,222,128,0.4);
+          color:#15803d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+        🤖 {t['badge_ai']}
+    </span>
+    <span style="background:rgba(59,130,246,0.15); border:2px solid rgba(59,130,246,0.4);
+          color:#1d4ed8; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+        ⚡ {t['badge_realtime']}
+    </span>
+    <span style="background:rgba(168,85,247,0.15); border:2px solid rgba(168,85,247,0.4);
+          color:#7c3aed; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+        🔒 {t['badge_secure']}
+    </span>
+    <span style="background:rgba(212,175,55,0.15); border:2px solid rgba(212,175,55,0.5);
+          color:#92400e; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+        📊 {t['badge_features']}
+    </span>
+    <span style="background:rgba(236,72,153,0.15); border:2px solid rgba(236,72,153,0.4);
+          color:#be185d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+        🌲 {t['badge_trees']}
+    </span>
+</div>
 # ============================================================
 # METRICS ROW
 # ============================================================
