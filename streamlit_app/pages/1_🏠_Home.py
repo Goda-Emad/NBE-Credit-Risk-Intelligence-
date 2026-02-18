@@ -1,6 +1,6 @@
 """
 NBE Credit Risk Intelligence - Home Page
-Professional UI - National Bank of Egypt (البنك الأهلي المصري)
+Professional Banking UI - National Bank of Egypt
 """
 import streamlit as st
 from pathlib import Path
@@ -14,23 +14,21 @@ st.set_page_config(
 )
 
 # ============================================================
-# Language Selection (Session State)
+# Language Session State
 # ============================================================
 if 'language' not in st.session_state:
-    st.session_state.language = 'ar'  # Default: Arabic
+    st.session_state.language = 'ar'
 
 # ============================================================
-# Load Banner Image
+# Load Banner
 # ============================================================
 def get_image_base64(image_path):
-    """Convert image to base64 for HTML embedding"""
     try:
         with open(image_path, "rb") as f:
             return base64.b64encode(f.read()).decode()
     except:
         return None
 
-# Find banner in assets/images/
 possible_paths = [
     Path(__file__).parent.parent.parent / "assets" / "images" / "banner.png",
     Path("assets") / "images" / "banner.png",
@@ -38,9 +36,9 @@ possible_paths = [
 ]
 
 banner_b64 = None
-for banner_path in possible_paths:
-    if banner_path.exists():
-        banner_b64 = get_image_base64(banner_path)
+for p in possible_paths:
+    if p.exists():
+        banner_b64 = get_image_base64(p)
         break
 
 # ============================================================
@@ -48,6 +46,7 @@ for banner_path in possible_paths:
 # ============================================================
 TRANSLATIONS = {
     'ar': {
+        'lang_label': 'اللغة',
         'title': 'منصة الذكاء الاصطناعي لتقييم مخاطر الائتمان',
         'subtitle': 'البنك الأهلي المصري',
         'description': 'منصة ذكاء اصطناعي متكاملة لتقييم مخاطر الائتمان في الوقت الفعلي، مبنية على نموذج Random Forest بدقة 76.5% ومتوافقة بالكامل مع معايير البنك المركزي المصري',
@@ -67,20 +66,20 @@ TRANSLATIONS = {
         'cap2_title': 'تحليلات المحفظة',
         'cap2_desc': 'رؤى شاملة للمحفظة، تحليل الاتجاهات، ومقاييس الأداء في لوحات تحكم تفاعلية.',
         'cap3_title': 'متوافق مع البنك المركزي',
-        'cap3_desc': 'مسار تدقيق كامل، قرارات ذكاء اصطناعي قابلة للتفسير، والامتثال التنظيمي الكامل للبنك المركزي المصري.',
+        'cap3_desc': 'مسار تدقيق كامل، قرارات ذكاء اصطناعي قابلة للتفسير، والامتثال التنظيمي الكامل.',
         'cap4_title': 'مراقبة النموذج',
-        'cap4_desc': 'تتبع أداء النموذج في الوقت الفعلي، كشف الانحراف، وخط إعادة تدريب تلقائي.',
+        'cap4_desc': 'تتبع أداء النموذج في الوقت الفعلي، كشف الانحراف، وإعادة تدريب تلقائية.',
         'cap5_title': 'قرارات فورية',
-        'cap5_desc': 'تنبؤات بأقل من ثانية مع درجات احتمالية وتوصيات تفصيلية لموظفي القروض.',
+        'cap5_desc': 'تنبؤات بأقل من ثانية مع درجات احتمالية وتوصيات تفصيلية.',
         'cap6_title': 'إعادة تدريب تلقائية',
-        'cap6_desc': 'خط MLOps مع إعادة تدريب تلقائية للنموذج عند انخفاض الأداء تحت العتبة المحددة.',
+        'cap6_desc': 'خط MLOps مع إعادة تدريب تلقائية عند انخفاض الأداء.',
         'quickstart': 'دليل البدء السريع',
         'step1': 'تقييم المخاطر',
         'step1_desc': 'انتقل إلى صفحة تقييم المخاطر',
         'step2': 'إدخال البيانات',
-        'step2_desc': 'أدخل معلومات العميل في النموذج',
+        'step2_desc': 'أدخل معلومات العميل',
         'step3': 'الحصول على القرار',
-        'step3_desc': 'احصل على تنبؤ فوري بالذكاء الاصطناعي',
+        'step3_desc': 'احصل على تنبؤ فوري',
         'step4': 'عرض التحليلات',
         'step4_desc': 'استكشف رؤى المحفظة',
         'tech_stack': 'التقنيات المستخدمة',
@@ -91,13 +90,14 @@ TRANSLATIONS = {
         'f1_score': 'F1-Score',
         'false_negatives': 'سلبيات كاذبة',
         'training_time': 'وقت التدريب',
-        'footer_title': 'منصة الذكاء الاصطناعي لتقييم مخاطر الائتمان',
+        'footer_title': 'منصة تقييم مخاطر الائتمان',
         'footer_bank': 'البنك الأهلي المصري',
         'footer_rights': '© 2026 البنك الأهلي المصري',
         'footer_dev': 'تطوير',
         'footer_version': 'الإصدار 3.0',
     },
     'en': {
+        'lang_label': 'Language',
         'title': 'Credit Risk Intelligence Platform',
         'subtitle': 'National Bank of Egypt',
         'description': 'AI-powered credit risk assessment platform with Random Forest model achieving 76.5% accuracy, fully compliant with Central Bank of Egypt regulations',
@@ -117,13 +117,13 @@ TRANSLATIONS = {
         'cap2_title': 'Portfolio Analytics',
         'cap2_desc': 'Comprehensive portfolio insights, trend analysis, and performance metrics in interactive dashboards.',
         'cap3_title': 'CBE Compliant',
-        'cap3_desc': 'Full audit trail, explainable AI decisions, and complete regulatory compliance with Central Bank of Egypt.',
+        'cap3_desc': 'Full audit trail, explainable AI decisions, and complete regulatory compliance.',
         'cap4_title': 'Model Monitoring',
-        'cap4_desc': 'Real-time model performance tracking, drift detection, and automated retraining pipeline.',
+        'cap4_desc': 'Real-time model performance tracking, drift detection, and automated retraining.',
         'cap5_title': 'Instant Decisions',
-        'cap5_desc': 'Sub-second predictions with probability scores and detailed recommendations for loan officers.',
+        'cap5_desc': 'Sub-second predictions with probability scores and detailed recommendations.',
         'cap6_title': 'Auto Retraining',
-        'cap6_desc': 'MLOps pipeline with automated model retraining when performance degrades below threshold.',
+        'cap6_desc': 'MLOps pipeline with automated model retraining when performance degrades.',
         'quickstart': 'Quick Start Guide',
         'step1': 'Risk Assessment',
         'step1_desc': 'Go to Risk Assessment page',
@@ -151,18 +151,16 @@ TRANSLATIONS = {
 
 lang = st.session_state.language
 t = TRANSLATIONS[lang]
-
-# ============================================================
-# CSS - Professional NBE Banking Theme
-# ============================================================
 direction = 'rtl' if lang == 'ar' else 'ltr'
 text_align = 'right' if lang == 'ar' else 'left'
 
+# ============================================================
+# CSS
+# ============================================================
 st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cairo:wght@400;600;700;800&display=swap');
 
-/* ========== Root Variables - NBE Colors ========== */
 :root {{
     --nbe-dark-green:  #004d34;
     --nbe-green:       #006341;
@@ -174,7 +172,6 @@ st.markdown(f"""
     --nbe-gray:        #666666;
 }}
 
-/* ========== Global Styles ========== */
 html, body, [class*="css"] {{
     font-family: 'Cairo', sans-serif;
     background-color: var(--nbe-cream) !important;
@@ -182,11 +179,9 @@ html, body, [class*="css"] {{
     direction: {direction};
 }}
 
-/* Hide Streamlit branding */
 #MainMenu, footer, header {{ visibility: hidden; }}
 .block-container {{ padding: 0 2rem 2rem !important; }}
 
-/* ========== Sidebar ========== */
 [data-testid="stSidebar"] {{
     background: linear-gradient(180deg, #004d34 0%, #006341 100%) !important;
     border-{text_align}: 2px solid var(--nbe-gold);
@@ -203,10 +198,8 @@ html, body, [class*="css"] {{
 [data-testid="stSidebar"] .stRadio label:hover {{
     background: rgba(212,175,55,0.25);
     border-{text_align}: 3px solid var(--nbe-gold);
-    transform: translateX({'-5px' if lang == 'ar' else '5px'});
 }}
 
-/* ========== Metrics ========== */
 [data-testid="stMetricValue"] {{
     color: var(--nbe-dark-green) !important;
     font-size: 2.2rem !important;
@@ -215,38 +208,22 @@ html, body, [class*="css"] {{
 [data-testid="stMetricLabel"] {{
     color: var(--nbe-gray) !important;
     font-weight: 600 !important;
-    font-size: 0.95rem !important;
-}}
-[data-testid="stMetricDelta"] {{
-    color: var(--nbe-green) !important;
-    font-weight: 700 !important;
 }}
 
-/* ========== Buttons ========== */
-.stButton > button {{
-    background: linear-gradient(135deg, var(--nbe-gold), #b8962e) !important;
+.stSelectbox label {{
     color: var(--nbe-dark-green) !important;
     font-weight: 700 !important;
-    font-family: 'Cairo', sans-serif !important;
-    border: none !important;
+    font-size: 14px !important;
+}}
+.stSelectbox > div > div {{
+    background: var(--nbe-white) !important;
+    border: 2px solid var(--nbe-gold) !important;
     border-radius: 10px !important;
-    padding: 14px 32px !important;
-    font-size: 16px !important;
-    transition: all 0.3s !important;
-    box-shadow: 0 6px 20px rgba(212,175,55,0.4) !important;
-}}
-.stButton > button:hover {{
-    transform: translateY(-3px) !important;
-    box-shadow: 0 10px 30px rgba(212,175,55,0.6) !important;
+    font-weight: 600 !important;
 }}
 
-/* ========== Divider ========== */
-hr {{ 
-    border-color: rgba(0,99,65,0.2) !important;
-    margin: 2rem 0 !important;
-}}
+hr {{ border-color: rgba(0,99,65,0.2) !important; margin: 2rem 0 !important; }}
 
-/* ========== Banner ========== */
 .banner-container {{
     width: 100%;
     max-width: 1200px;
@@ -260,37 +237,28 @@ hr {{
     height: auto;
     display: block;
 }}
-
-/* ========== Language Toggle ========== */
-.language-toggle {{
-    position: fixed;
-    top: 20px;
-    {text_align}: 20px;
-    z-index: 999;
-    background: var(--nbe-white);
-    border: 2px solid var(--nbe-gold);
-    border-radius: 10px;
-    padding: 8px 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}}
 </style>
 """, unsafe_allow_html=True)
 
 # ============================================================
-# Language Toggle Button (Top Right/Left)
+# Language Selector
 # ============================================================
-col_lang1, col_lang2, col_lang3 = st.columns([6, 1, 1])
-with col_lang2:
-    if st.button("🇪🇬 عربي", use_container_width=True):
-        st.session_state.language = 'ar'
-        st.rerun()
-with col_lang3:
-    if st.button("🇬🇧 EN", use_container_width=True):
-        st.session_state.language = 'en'
+col_spacer, col_lang = st.columns([6, 2])
+with col_lang:
+    lang_options = {'ar': '🇪🇬 العربية', 'en': '🇬🇧 English'}
+    selected = st.selectbox(
+        t['lang_label'],
+        options=list(lang_options.keys()),
+        format_func=lambda x: lang_options[x],
+        index=0 if st.session_state.language == 'ar' else 1,
+        key='lang_selector'
+    )
+    if selected != st.session_state.language:
+        st.session_state.language = selected
         st.rerun()
 
 # ============================================================
-# BANNER IMAGE (Full Width, Proper Size)
+# BANNER
 # ============================================================
 if banner_b64:
     st.markdown(f"""
@@ -302,7 +270,7 @@ if banner_b64:
 # ============================================================
 # HERO SECTION
 # ============================================================
-st.markdown(f"""
+hero_content = f"""
 <div style="
     background: linear-gradient(135deg, var(--nbe-white) 0%, var(--nbe-cream) 100%);
     border: 2px solid var(--nbe-gold);
@@ -314,82 +282,77 @@ st.markdown(f"""
     box-shadow: 0 20px 60px rgba(0,99,65,0.15);
     text-align: {text_align};
 ">
-    <!-- Decorative Elements -->
     <div style="
-        position: absolute; top: -60px; {'right' if lang == 'ar' else 'left'}: -60px;
+        position: absolute; top: -60px; right: -60px;
         width: 250px; height: 250px;
         border-radius: 50%;
         border: 3px solid rgba(0,99,65,0.08);
     "></div>
     <div style="
-        position: absolute; bottom: -40px; {'left' if lang == 'ar' else 'right'}: -40px;
+        position: absolute; bottom: -40px; left: -40px;
         width: 180px; height: 180px;
         border-radius: 50%;
         border: 3px solid rgba(212,175,55,0.15);
     "></div>
 
-<!-- Title Section -->
-<div style="margin-bottom: 20px;">
-    <div style="
-        font-family: 'Cairo', sans-serif;
-        font-size: 14px;
-        color: var(--nbe-gold);
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-        font-weight: 700;
-    ">{t['subtitle']}</div>
-    <div style="
-        font-family: 'Playfair Display', serif;
-        font-size: 48px;
-        font-weight: 900;
-        color: var(--nbe-dark-green);
-        line-height: 1.2;
-        margin-bottom: 20px;
-    ">{t['title']}</div>
-</div>
+    <div style="margin-bottom: 20px;">
+        <div style="
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            color: var(--nbe-gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 700;
+        ">{t['subtitle']}</div>
+        <div style="
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--nbe-dark-green);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        ">{t['title']}</div>
+    </div>
 
-<!-- Description -->
-<p style="
-    color: var(--nbe-gray);
-    font-size: 18px;
-    max-width: 850px;
-    line-height: 1.9;
-    margin: 0 0 30px {'auto 0' if lang == 'ar' else '0'};
-    font-weight: 500;
-">
-    {t['description']}
-</p>
+    <p style="
+        color: var(--nbe-gray);
+        font-size: 18px;
+        max-width: 850px;
+        line-height: 1.9;
+        margin: 0 0 30px;
+        font-weight: 500;
+    ">{t['description']}</p>
 
-<!-- Badges -->
-<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: {'flex-start' if lang == 'ar' else 'flex-start'};">
-    <span style="background:rgba(0,99,65,0.1); border:2px solid rgba(0,99,65,0.3);
-          color:var(--nbe-dark-green); padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-        ✅ {t['badge_cbe']}
-    </span>
-    <span style="background:rgba(74,222,128,0.15); border:2px solid rgba(74,222,128,0.4);
-          color:#15803d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-        🤖 {t['badge_ai']}
-    </span>
-    <span style="background:rgba(59,130,246,0.15); border:2px solid rgba(59,130,246,0.4);
-          color:#1d4ed8; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-        ⚡ {t['badge_realtime']}
-    </span>
-    <span style="background:rgba(168,85,247,0.15); border:2px solid rgba(168,85,247,0.4);
-          color:#7c3aed; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-        🔒 {t['badge_secure']}
-    </span>
-    <span style="background:rgba(212,175,55,0.15); border:2px solid rgba(212,175,55,0.5);
-          color:#92400e; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-        📊 {t['badge_features']}
-    </span>
-    <span style="background:rgba(236,72,153,0.15); border:2px solid rgba(236,72,153,0.4);
-          color:#be185d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
-        🌲 {t['badge_trees']}
-    </span>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+"""
+
+badges = [
+    ('badge_cbe', 'rgba(0,99,65,0.1)', 'rgba(0,99,65,0.3)', 'var(--nbe-dark-green)', '✅'),
+    ('badge_ai', 'rgba(74,222,128,0.15)', 'rgba(74,222,128,0.4)', '#15803d', '🤖'),
+    ('badge_realtime', 'rgba(59,130,246,0.15)', 'rgba(59,130,246,0.4)', '#1d4ed8', '⚡'),
+    ('badge_secure', 'rgba(168,85,247,0.15)', 'rgba(168,85,247,0.4)', '#7c3aed', '🔒'),
+    ('badge_features', 'rgba(212,175,55,0.15)', 'rgba(212,175,55,0.5)', '#92400e', '📊'),
+    ('badge_trees', 'rgba(236,72,153,0.15)', 'rgba(236,72,153,0.4)', '#be185d', '🌲'),
+]
+
+for key, bg, border, color, icon in badges:
+    hero_content += f"""
+        <span style="background:{bg}; border:2px solid {border};
+              color:{color}; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+            {icon} {t[key]}
+        </span>
+    """
+
+hero_content += """
+    </div>
 </div>
+"""
+
+st.markdown(hero_content, unsafe_allow_html=True)
+
 # ============================================================
-# METRICS ROW
+# METRICS
 # ============================================================
 col1, col2, col3, col4 = st.columns(4)
 with col1:
@@ -399,12 +362,12 @@ with col2:
 with col3:
     st.metric(t['metric3'], "800", t['metric3'])
 with col4:
-    st.metric(t['metric4'], "100", "Random Forest")
+    st.metric(t['metric4'], "100", "RF")
 
 st.markdown("---")
 
 # ============================================================
-# CAPABILITIES CARDS
+# CAPABILITIES
 # ============================================================
 st.markdown(f"""
 <h2 style="color:var(--nbe-dark-green); font-family:'Playfair Display',serif;
@@ -414,17 +377,17 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 cards = [
-    ("🎯", t['cap1_title'], t['cap1_desc'], "#D4AF37"),
-    ("📊", t['cap2_title'], t['cap2_desc'], "#15803d"),
-    ("🔒", t['cap3_title'], t['cap3_desc'], "#1d4ed8"),
-    ("📈", t['cap4_title'], t['cap4_desc'], "#7c3aed"),
-    ("⚡", t['cap5_title'], t['cap5_desc'], "#ea580c"),
-    ("🔄", t['cap6_title'], t['cap6_desc'], "#be185d"),
+    ("🎯", 'cap1_title', 'cap1_desc', "#D4AF37"),
+    ("📊", 'cap2_title', 'cap2_desc', "#15803d"),
+    ("🔒", 'cap3_title', 'cap3_desc', "#1d4ed8"),
+    ("📈", 'cap4_title', 'cap4_desc', "#7c3aed"),
+    ("⚡", 'cap5_title', 'cap5_desc', "#ea580c"),
+    ("🔄", 'cap6_title', 'cap6_desc', "#be185d"),
 ]
 
 c1, c2, c3 = st.columns(3)
 cols = [c1, c2, c3]
-for i, (icon, title, desc, color) in enumerate(cards):
+for i, (icon, title_key, desc_key, color) in enumerate(cards):
     with cols[i % 3]:
         st.markdown(f"""
         <div style="
@@ -442,16 +405,16 @@ for i, (icon, title, desc, color) in enumerate(cards):
            onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 25px rgba(0,0,0,0.08)';">
             <div style="font-size:48px; margin-bottom:16px;">{icon}</div>
             <h3 style="color:{color}; font-size:20px; margin:0 0 14px;
-                font-family:'Cairo',sans-serif; font-weight:800;">{title}</h3>
+                font-family:'Cairo',sans-serif; font-weight:800;">{t[title_key]}</h3>
             <p style="color:var(--nbe-gray); font-size:15px;
-                line-height:1.8; margin:0; font-weight:500;">{desc}</p>
+                line-height:1.8; margin:0; font-weight:500;">{t[desc_key]}</p>
         </div>
         """, unsafe_allow_html=True)
 
 st.markdown("---")
 
 # ============================================================
-# QUICK START GUIDE
+# QUICK START
 # ============================================================
 st.markdown(f"""
 <h2 style="color:var(--nbe-dark-green); font-family:'Playfair Display',serif;
@@ -461,13 +424,13 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 steps = [
-    ("01", "🎯", t['step1'], t['step1_desc']),
-    ("02", "📋", t['step2'], t['step2_desc']),
-    ("03", "🔍", t['step3'], t['step3_desc']),
-    ("04", "📊", t['step4'], t['step4_desc']),
+    ("01", "🎯", 'step1', 'step1_desc'),
+    ("02", "📋", 'step2', 'step2_desc'),
+    ("03", "🔍", 'step3', 'step3_desc'),
+    ("04", "📊", 'step4', 'step4_desc'),
 ]
 s1, s2, s3, s4 = st.columns(4)
-for col, (num, icon, title, desc) in zip([s1,s2,s3,s4], steps):
+for col, (num, icon, title_key, desc_key) in zip([s1,s2,s3,s4], steps):
     with col:
         st.markdown(f"""
         <div style="
@@ -494,16 +457,16 @@ for col, (num, icon, title, desc) in zip([s1,s2,s3,s4], steps):
             ">{num}</div>
             <div style="font-size:40px; margin-bottom:12px;">{icon}</div>
             <h4 style="color:var(--nbe-dark-green); font-size:17px; margin:0 0 12px;
-                font-family:'Cairo',sans-serif; font-weight:800;">{title}</h4>
+                font-family:'Cairo',sans-serif; font-weight:800;">{t[title_key]}</h4>
             <p style="color:var(--nbe-gray); font-size:14px;
-                margin:0; line-height:1.7; font-weight:500;">{desc}</p>
+                margin:0; line-height:1.7; font-weight:500;">{t[desc_key]}</p>
         </div>
         """, unsafe_allow_html=True)
 
 st.markdown("---")
 
 # ============================================================
-# TECH & PERFORMANCE SECTION
+# TECH & PERFORMANCE
 # ============================================================
 c1, c2 = st.columns(2)
 
@@ -545,21 +508,21 @@ with c2:
     """, unsafe_allow_html=True)
 
     stats = [
-        (t['test_accuracy'],     "76.50%",   "#D4AF37"),
-        (t['precision'],         "64.4%",    "#15803d"),
-        (t['recall'],            "48.3%",    "#1d4ed8"),
-        (t['f1_score'],          "55.2%",    "#7c3aed"),
-        (t['false_negatives'],   "31",       "#dc2626"),
-        (t['training_time'],     "< 1 min",  "#ea580c"),
+        ('test_accuracy',     "76.50%",   "#D4AF37"),
+        ('precision',         "64.4%",    "#15803d"),
+        ('recall',            "48.3%",    "#1d4ed8"),
+        ('f1_score',          "55.2%",    "#7c3aed"),
+        ('false_negatives',   "31",       "#dc2626"),
+        ('training_time',     "< 1 min",  "#ea580c"),
     ]
-    for label, value, color in stats:
+    for label_key, value, color in stats:
         st.markdown(f"""
         <div style="display:flex;justify-content:space-between;align-items:center;
             padding:14px 18px;border-radius:12px;
             background:rgba(0,99,65,0.03);
             border:2px solid rgba(0,99,65,0.08);
             margin-bottom:12px;">
-            <span style="color:var(--nbe-gray);font-size:15px;font-weight:600;">{label}</span>
+            <span style="color:var(--nbe-gray);font-size:15px;font-weight:600;">{t[label_key]}</span>
             <span style="color:{color};font-weight:800;font-size:17px;">{value}</span>
         </div>
         """, unsafe_allow_html=True)
@@ -608,8 +571,8 @@ st.markdown(f"""
             font-family: 'Cairo', sans-serif;
             transition: all 0.3s;
             display: inline-block;
-        " onmouseover="this.style.background='rgba(10,102,194,0.4)';this.style.transform='translateY(-3px)';"
-           onmouseout="this.style.background='rgba(10,102,194,0.25)';this.style.transform='translateY(0)';">
+        " onmouseover="this.style.background='rgba(10,102,194,0.4)';"
+           onmouseout="this.style.background='rgba(10,102,194,0.25)';">
            🔗 LinkedIn - ENG.Goda Emad
         </a>
         <a href="https://github.com/Goda-Emad/NBE-Credit-Risk-Intelligence-"
@@ -625,8 +588,8 @@ st.markdown(f"""
             font-family: 'Cairo', sans-serif;
             transition: all 0.3s;
             display: inline-block;
-        " onmouseover="this.style.background='rgba(255,255,255,0.25)';this.style.transform='translateY(-3px)';"
-           onmouseout="this.style.background='rgba(255,255,255,0.15)';this.style.transform='translateY(0)';">
+        " onmouseover="this.style.background='rgba(255,255,255,0.25)';"
+           onmouseout="this.style.background='rgba(255,255,255,0.15)';">
            ⭐ GitHub Project
         </a>
     </div>
