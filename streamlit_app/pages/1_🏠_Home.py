@@ -2,6 +2,7 @@
 NBE Credit Risk Intelligence - Home Page
 Professional UI with Real NBE Banner & Logo
 """
+
 import streamlit as st
 from pathlib import Path
 import base64
@@ -24,24 +25,16 @@ def get_image_base64(image_path):
     except:
         return None
 
-# Find images in assets/nbe_branding/
-possible_paths = [
-    Path(__file__).parent.parent.parent / "assets" / "nbe_branding",
-    Path("assets") / "nbe_branding",
-    Path("../assets") / "nbe_branding",
-]
+# ============================================================
+# FIXED: Direct path (works local + cloud)
+# ============================================================
+base_path = Path("assets/nbe_branding")
 
-banner_b64 = None
-logo_b64 = None
+banner_file = base_path / "banner.png"
+logo_file = base_path / "nbe_logo.jpg"
 
-for base_path in possible_paths:
-    banner_file = base_path / "banner.png"
-    logo_file = base_path / "nbe_logo.jpg"
-    if banner_file.exists() and logo_file.exists():
-        banner_b64 = get_image_base64(banner_file)
-        logo_b64 = get_image_base64(logo_file)
-        break
-
+banner_b64 = get_image_base64(banner_file) if banner_file.exists() else None
+logo_b64 = get_image_base64(logo_file) if logo_file.exists() else None
 # ============================================================
 # CSS - Professional NBE Dark Green Theme
 # ============================================================
@@ -521,3 +514,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 ```
 
+---
+"""
+Project Structure:
+
+NBE-Credit-Risk-Intelligence/
+├── assets/
+│   └── nbe_branding/
+│       ├── banner.png
+│       └── nbe_logo.jpg
+└── streamlit_app/
+    └── pages/
+        └── 1_🏠_Home.py
+"""
