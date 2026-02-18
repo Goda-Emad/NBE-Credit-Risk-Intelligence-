@@ -7,6 +7,10 @@ import streamlit as st
 from pathlib import Path
 import base64
 
+# ============================================================
+# Page Config
+# ============================================================
+
 st.set_page_config(
     page_title="NBE Credit Risk Intelligence",
     page_icon="🏦",
@@ -15,19 +19,20 @@ st.set_page_config(
 )
 
 # ============================================================
-# Helper: Load Image as Base64
+# Helper: Convert Image to Base64
 # ============================================================
+
 def get_image_base64(image_path):
-    """Convert image to base64 for HTML embedding"""
     try:
         with open(image_path, "rb") as f:
             return base64.b64encode(f.read()).decode()
-    except:
+    except Exception:
         return None
 
 # ============================================================
-# FIXED: Direct path (works local + cloud)
+# Load Branding Assets (Cloud + Local Safe)
 # ============================================================
+
 base_path = Path("assets/nbe_branding")
 
 banner_file = base_path / "banner.png"
@@ -35,6 +40,131 @@ logo_file = base_path / "nbe_logo.jpg"
 
 banner_b64 = get_image_base64(banner_file) if banner_file.exists() else None
 logo_b64 = get_image_base64(logo_file) if logo_file.exists() else None
+
+# ============================================================
+# Custom CSS
+# ============================================================
+
+st.markdown("""
+<style>
+
+.main {
+    padding-top: 0rem;
+}
+
+.hero-container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.hero-subtitle {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-top: 40px;
+}
+
+.card {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ============================================================
+# Hero Section
+# ============================================================
+
+if banner_b64:
+    st.markdown(
+        f"""
+        <div class="hero-container">
+            <img src="data:image/png;base64,{banner_b64}" width="100%">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+st.markdown("<div class='hero-title'>NBE Credit Risk Intelligence</div>", unsafe_allow_html=True)
+st.markdown("<div class='hero-subtitle'>AI-Powered Credit Risk Analytics Platform</div>", unsafe_allow_html=True)
+
+# ============================================================
+# Logo
+# ============================================================
+
+if logo_b64:
+    st.markdown(
+        f"""
+        <div style="text-align:center;">
+            <img src="data:image/jpg;base64,{logo_b64}" width="180">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ============================================================
+# Features Section
+# ============================================================
+
+st.markdown("<div class='section-title'>Platform Features</div>", unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("""
+    <div class="card">
+        <h4>📊 Credit Scoring</h4>
+        <p>Advanced ML models to assess borrower risk profiles.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div class="card">
+        <h4>📈 Risk Analytics</h4>
+        <p>Interactive dashboards for portfolio monitoring.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+    <div class="card">
+        <h4>⚙️ Model Monitoring</h4>
+        <p>Real-time performance tracking and drift detection.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ============================================================
+# Footer
+# ============================================================
+
+st.markdown("""
+<footer>
+© 2026 National Bank of Egypt - Credit Risk Intelligence System
+</footer>
+""", unsafe_allow_html=True)
+
 # ============================================================
 # CSS - Professional NBE Dark Green Theme
 # ============================================================
