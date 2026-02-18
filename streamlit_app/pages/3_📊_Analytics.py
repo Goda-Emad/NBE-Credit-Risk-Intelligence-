@@ -72,7 +72,6 @@ T = {
 }
 t = T[lang]
 
-# ── CSS ───────────────────────────────────────────────────────
 css = (
     '@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900'
     '&family=Cairo:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap");'
@@ -80,8 +79,10 @@ css = (
     '  --gold:#C9A84C;--gold-l:#E8C97A;--bg:#001f15;'
     '  --border:rgba(201,168,76,0.2);--gray:#8a9bb0;'
     '}'
-    f'html,body,[class*="css"]{{font-family:Cairo,sans-serif!important;'
-    f'background:#001f15!important;color:#fff!important;direction:{direction};}}'
+    'html,body,[class*="css"]{'
+    '  font-family:Cairo,sans-serif!important;'
+    '  background:#001f15!important;color:#fff!important;'
+    f'  direction:{direction};}}'
     '#MainMenu,footer,header{visibility:hidden}'
     '.block-container{padding:1rem 2rem 3rem!important;max-width:1400px}'
     '[data-testid="stSidebar"]{'
@@ -117,8 +118,7 @@ css = (
     '  box-shadow:0 8px 32px rgba(0,61,42,0.3);}'
     '.chart-title{'
     '  font-size:16px;font-weight:800;color:#C9A84C;'
-    f'  font-family:Cairo,sans-serif;margin-bottom:16px;text-align:{text_align};}'
-    '.stats-table{border-radius:12px;overflow:hidden;}'
+    f'  font-family:Cairo,sans-serif;margin-bottom:16px;text-align:{text_align};}}'
     '@keyframes countAnim{from{opacity:0;transform:scale(0.5) translateY(20px)}'
     '  to{opacity:1;transform:scale(1) translateY(0)}}'
     '@keyframes fadeInUp{from{opacity:0;transform:translateY(25px)}'
@@ -130,7 +130,6 @@ css = (
     '[data-testid="stDataFrame"]{border-radius:12px;overflow:hidden;}'
 )
 st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
-
 # ── SIDEBAR ───────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
