@@ -159,7 +159,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# HERO SECTION WITH REAL NBE LOGO
+# HERO SECTION WITH ANIMATED CIRCLES
 # ============================================================
 hero_html = """
 <div style="
@@ -167,30 +167,53 @@ hero_html = """
     border: 1px solid rgba(212,175,55,0.3);
     border-radius: 20px;
     padding: 50px 40px;
-    margin: 0 0 30px;
+    margin: 0 auto 30px;
+    max-width: 1200px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 ">
-    <!-- Decorative circles -->
+
+    <!-- Animated Decorative Circles -->
     <div style="
         position: absolute; top: -60px; right: -60px;
         width: 250px; height: 250px;
         border-radius: 50%;
         border: 2px solid rgba(212,175,55,0.15);
+        animation: float1 8s ease-in-out infinite alternate;
     "></div>
     <div style="
         position: absolute; top: -30px; right: -30px;
         width: 150px; height: 150px;
         border-radius: 50%;
         border: 2px solid rgba(212,175,55,0.25);
+        animation: float2 6s ease-in-out infinite alternate-reverse;
     "></div>
     <div style="
         position: absolute; bottom: -40px; left: -40px;
         width: 180px; height: 180px;
         border-radius: 50%;
         border: 2px solid rgba(212,175,55,0.1);
+        animation: float3 10s ease-in-out infinite alternate;
     "></div>
+
+    <style>
+        @keyframes float1 {
+            0% { transform: translateY(0px) translateX(0px); opacity: 0.7; }
+            50% { transform: translateY(-20px) translateX(15px); opacity: 0.5; }
+            100% { transform: translateY(0px) translateX(0px); opacity: 0.7; }
+        }
+        @keyframes float2 {
+            0% { transform: translateY(0px) translateX(0px); opacity: 0.6; }
+            50% { transform: translateY(25px) translateX(-10px); opacity: 0.4; }
+            100% { transform: translateY(0px) translateX(0px); opacity: 0.6; }
+        }
+        @keyframes float3 {
+            0% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
+            50% { transform: translateY(-15px) translateX(20px); opacity: 0.7; }
+            100% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
+        }
+    </style>
 
     <!-- Logo & Title Section -->
     <div style="display: flex; align-items: center; gap: 25px; margin-bottom: 25px; flex-wrap: wrap;">
@@ -237,7 +260,7 @@ hero_html += """
     <p style="
         color: rgba(255,255,255,0.75);
         font-size: 18px;
-        max-width: 700px;
+        max-width: 100%;
         line-height: 1.7;
         margin: 0 0 30px;
     ">
@@ -247,7 +270,7 @@ hero_html += """
     </p>
 
     <!-- Badge row -->
-    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; max-width: 100%;">
         <span style="background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.4);
               color:#D4AF37; padding:6px 14px; border-radius:20px; font-size:13px; font-weight:600;">
             ✅ CBE Compliant
@@ -278,24 +301,61 @@ hero_html += """
 
 st.markdown(hero_html, unsafe_allow_html=True)
 
+import time
+import streamlit as st
+
 # ============================================================
-# METRICS ROW
+# METRICS ROW - ANIMATED NBE STYLE
 # ============================================================
 col1, col2, col3, col4 = st.columns(4)
-metrics = [
-    ("🎯 Model Accuracy", "76.5%",  "+2.3%"),
-    ("⚡ Features",        "73",     "Engineered"),
-    ("📊 Training Data",  "800",    "Samples"),
-    ("🌲 Decision Trees", "100",    "Random Forest"),
-]
-for col, (label, value, delta) in zip([col1,col2,col3,col4], metrics):
-    with col:
-        st.metric(label, value, delta)
 
-st.markdown("---")
+metrics = [
+    ("🎯 Model Accuracy", 76.5,  "+2.3%"),
+    ("⚡ Features",        73,     "Engineered"),
+    ("📊 Training Data",  800,    "Samples"),
+    ("🌲 Decision Trees", 100,    "Random Forest"),
+]
+
+for col, (label, value, delta) in zip([col1, col2, col3, col4], metrics):
+    with col:
+        placeholder = st.empty()  # Container for animated number
+        # Animation loop
+        steps = 30
+        for i in range(1, steps+1):
+            current_value = round(value * i / steps, 2) if isinstance(value, float) else int(value * i / steps)
+            placeholder.markdown(f"""
+            <div style="
+                background: rgba(212,175,55,0.05);
+                border: 1px solid rgba(212,175,55,0.2);
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            ">
+                <div style="
+                    font-size: 18px; 
+                    font-weight: 600; 
+                    color: #D4AF37; 
+                    margin-bottom: 6px;
+                ">{label}</div>
+                <div style="
+                    font-size: 28px; 
+                    font-weight: 700; 
+                    color: #ffffff;
+                ">{current_value}</div>
+                <div style="
+                    font-size: 14px; 
+                    color: #4ade80; 
+                    margin-top: 4px;
+                ">{delta}</div>
+            </div>
+            """, unsafe_allow_html=True)
+            time.sleep(0.03)  # Adjust speed of animation
+
+st.markdown("<hr style='border-color: rgba(212,175,55,0.3);'>", unsafe_allow_html=True)
 
 # ============================================================
-# FEATURE CARDS
+# FEATURE CARDS - INTERACTIVE DYNAMIC WITH COUNTERS
 # ============================================================
 st.markdown("""
 <h2 style="color:#D4AF37; font-family:'Playfair Display',serif;
@@ -304,55 +364,76 @@ st.markdown("""
 </h2>
 """, unsafe_allow_html=True)
 
-cards = [
+# Cards data with dynamic numeric values
+cards_dynamic = [
     ("🎯", "Smart Assessment",
-     "تقييم فوري لمخاطر الائتمان باستخدام Random Forest مع 73 ميزة هندسية. النتائج في أقل من ثانيتين.",
-     "#D4AF37"),
+     "تقييم فوري لمخاطر الائتمان باستخدام Random Forest مع 73 ميزة هندسية.",
+     "#D4AF37", "73 Features"),
     ("📊", "Portfolio Analytics",
      "رؤى شاملة للمحفظة، تحليل الاتجاهات، ومقاييس الأداء في لوحات تحكم تفاعلية.",
-     "#4ade80"),
+     "#4ade80", "800 Samples"),
     ("🔒", "CBE Compliant",
-     "مسار تدقيق كامل، قرارات ذكاء اصطناعي قابلة للتفسير، والامتثال التنظيمي الكامل للبنك المركزي المصري.",
-     "#60a5fa"),
+     "مسار تدقيق كامل، قرارات ذكاء اصطناعي قابلة للتفسير، والامتثال الكامل للبنك المركزي المصري.",
+     "#60a5fa", "100% Compliance"),
     ("📈", "Model Monitoring",
      "تتبع أداء النموذج في الوقت الفعلي، كشف الانحراف، وخط إعادة تدريب تلقائي.",
-     "#a78bfa"),
+     "#a78bfa", "Real-time"),
     ("⚡", "Instant Decisions",
      "تنبؤات بأقل من ثانية مع درجات احتمالية وتوصيات تفصيلية لموظفي القروض.",
-     "#fb923c"),
+     "#fb923c", "<1s Response"),
     ("🔄", "Auto Retraining",
-     "خط MLOps مع إعادة تدريب تلقائية للنموذج عند انخفاض الأداء تحت العتبة المحددة.",
-     "#f472b6"),
+     "خط MLOps مع إعادة تدريب تلقائية للنموذج عند انخفاض الأداء.",
+     "#f472b6", "Automated"),
 ]
+
+# Custom CSS for hover animation and counters
+st.markdown("""
+<style>
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+.counter {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    margin-top: 10px;
+}
+</style>
+""", unsafe_allow_html=True)
 
 c1, c2, c3 = st.columns(3)
 cols = [c1, c2, c3]
-for i, (icon, title, desc, color) in enumerate(cards):
+
+for i, (icon, title, desc, color, counter) in enumerate(cards_dynamic):
     with cols[i % 3]:
         st.markdown(f"""
-        <div style="
+        <div class="card-hover" style="
             background: linear-gradient(135deg, #002a1c, #003d28);
             border: 1px solid rgba(255,255,255,0.08);
             border-top: 3px solid {color};
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 16px;
-            transition: all 0.3s;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             height: 100%;
         ">
             <div style="font-size:40px; margin-bottom:14px;">{icon}</div>
-            <h3 style="color:{color}; font-size:19px; margin:0 0 12px;
+            <h3 style="color:{color}; font-size:19px; margin:0 0 8px;
                 font-family:'Cairo',sans-serif; font-weight:700;">{title}</h3>
             <p style="color:rgba(255,255,255,0.7); font-size:14px;
-                line-height:1.8; margin:0;">{desc}</p>
+                line-height:1.6; margin:0;">{desc}</p>
+            <div class="counter">{counter}</div>
         </div>
         """, unsafe_allow_html=True)
 
-st.markdown("---")
+st.markdown("<hr style='border-color: rgba(212,175,55,0.3);'>", unsafe_allow_html=True)
 
 # ============================================================
-# QUICK START GUIDE
+# QUICK START GUIDE - ENHANCED HOVER
 # ============================================================
 st.markdown("""
 <h2 style="color:#D4AF37; font-family:'Playfair Display',serif;
@@ -361,57 +442,94 @@ st.markdown("""
 </h2>
 """, unsafe_allow_html=True)
 
+# Steps data
 steps = [
     ("01", "🎯 Risk Assessment", "انتقل إلى صفحة تقييم المخاطر من القائمة الجانبية"),
     ("02", "📋 Fill Details",    "أدخل معلومات العميل في النموذج"),
     ("03", "🔍 Get Decision",    "اضغط على تقييم المخاطر للحصول على تنبؤ فوري بالذكاء الاصطناعي"),
     ("04", "📊 View Analytics",  "استكشف رؤى المحفظة في صفحة التحليلات"),
 ]
+
+# CSS for hover effect
+st.markdown("""
+<style>
+.quick-step {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+.quick-step:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(212,175,55,0.3);
+}
+.quick-step-num {
+    width:60px; height:60px;
+    background: linear-gradient(135deg, #D4AF37, #b8962e);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700;
+    color: #002a1c;
+    margin: 0 auto 18px;
+    font-family: 'Cairo', sans-serif;
+    box-shadow: 0 6px 20px rgba(212,175,55,0.4);
+}
+.quick-step-title {
+    color:#ffffff;
+    font-size:16px;
+    margin:0 0 10px;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+}
+.quick-step-desc {
+    color:rgba(255,255,255,0.55);
+    font-size:13px;
+    margin:0;
+    line-height:1.6;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Display steps
 s1, s2, s3, s4 = st.columns(4)
-for col, (num, title, desc) in zip([s1,s2,s3,s4], steps):
+for col, (num, title, desc) in zip([s1, s2, s3, s4], steps):
     with col:
         st.markdown(f"""
-        <div style="
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(212,175,55,0.2);
-            border-radius: 16px;
-            padding: 24px 16px;
-            text-align: center;
-            height: 100%;
-            transition: all 0.3s;
-        " onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 12px 30px rgba(212,175,55,0.2)';"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';">
-            <div style="
-                width:60px; height:60px;
-                background: linear-gradient(135deg, #D4AF37, #b8962e);
-                border-radius: 50%;
-                display: flex; align-items: center; justify-content: center;
-                font-size: 20px; font-weight: 700;
-                color: #002a1c;
-                margin: 0 auto 18px;
-                font-family: 'Cairo', sans-serif;
-                box-shadow: 0 6px 20px rgba(212,175,55,0.4);
-            ">{num}</div>
-            <h4 style="color:#ffffff; font-size:16px; margin:0 0 10px;
-                font-family:'Cairo',sans-serif; font-weight:700;">{title}</h4>
-            <p style="color:rgba(255,255,255,0.55); font-size:13px;
-                margin:0; line-height:1.6;">{desc}</p>
+        <div class="quick-step">
+            <div class="quick-step-num">{num}</div>
+            <h4 class="quick-step-title">{title}</h4>
+            <p class="quick-step-desc">{desc}</p>
         </div>
         """, unsafe_allow_html=True)
 
 # ============================================================
-# TECHNOLOGY & STATS SECTION
+# TECHNOLOGY & STATS SECTION - ENHANCED
 # ============================================================
 st.markdown("---")
 
 c1, c2 = st.columns([1, 1])
 
+# ---------- TECHNOLOGY STACK ----------
 with c1:
     st.markdown("""
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
-        border-radius:16px;padding:28px;height:100%;">
-        <h3 style="color:#D4AF37;font-family:'Playfair Display',serif;
-            font-size:22px;margin-bottom:20px;">🔧 Technology Stack</h3>
+    <div style="
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 28px;
+        height: 100%;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    ">
+        <h3 style="
+            color:#D4AF37;
+            font-family:'Playfair Display',serif;
+            font-size:22px;
+            margin-bottom:20px;
+        ">🔧 Technology Stack</h3>
     """, unsafe_allow_html=True)
 
     techs = [
@@ -424,23 +542,39 @@ with c1:
     ]
     for icon, name, color in techs:
         st.markdown(f"""
-        <div style="display:flex;align-items:center;gap:14px;
-            padding:12px 16px;border-radius:10px;
-            background:rgba(255,255,255,0.02);
-            border:1px solid rgba(255,255,255,0.05);
-            margin-bottom:10px;">
+        <div style="
+            display:flex;align-items:center;gap:16px;
+            padding:14px 18px;border-radius:12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom:12px;
+            transition: all 0.3s ease;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 25px rgba(212,175,55,0.2)';"
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 rgba(0,0,0,0)';">
             <span style="font-size:24px;">{icon}</span>
             <span style="color:{color};font-weight:600;font-size:15px;">{name}</span>
         </div>
         """, unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
+# ---------- PERFORMANCE METRICS ----------
 with c2:
     st.markdown("""
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
-        border-radius:16px;padding:28px;height:100%;">
-        <h3 style="color:#60a5fa;font-family:'Playfair Display',serif;
-            font-size:22px;margin-bottom:20px;">📊 Performance Metrics</h3>
+    <div style="
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius:16px;
+        padding:28px;
+        height:100%;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    ">
+        <h3 style="
+            color:#60a5fa;
+            font-family:'Playfair Display',serif;
+            font-size:22px;
+            margin-bottom:20px;
+        ">📊 Performance Metrics</h3>
     """, unsafe_allow_html=True)
 
     stats = [
@@ -453,11 +587,15 @@ with c2:
     ]
     for label, value, color in stats:
         st.markdown(f"""
-        <div style="display:flex;justify-content:space-between;align-items:center;
-            padding:12px 16px;border-radius:10px;
-            background:rgba(255,255,255,0.02);
+        <div style="
+            display:flex;justify-content:space-between;align-items:center;
+            padding:14px 18px;border-radius:12px;
+            background: rgba(255,255,255,0.02);
             border:1px solid rgba(255,255,255,0.05);
-            margin-bottom:10px;">
+            margin-bottom:12px;
+            transition: all 0.3s ease;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 25px rgba(212,175,55,0.2)';"
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 rgba(0,0,0,0)';">
             <span style="color:rgba(255,255,255,0.6);font-size:14px;">{label}</span>
             <span style="color:{color};font-weight:700;font-size:16px;">{value}</span>
         </div>
@@ -465,7 +603,7 @@ with c2:
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================
-# FOOTER - DEVELOPER CARD
+# FOOTER - DEVELOPER CARD (ENHANCED)
 # ============================================================
 st.markdown("---")
 st.markdown("""
@@ -480,18 +618,31 @@ st.markdown("""
     align-items: center;
     gap: 24px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-">
+    transition: all 0.3s;
+" onmouseover="this.style.boxShadow='0 15px 50px rgba(0,0,0,0.5)';"
+   onmouseout="this.style.boxShadow='0 10px 40px rgba(0,0,0,0.3)';">
+   
     <div>
-        <div style="color:#D4AF37; font-weight:700; font-size:18px;
-            font-family:'Cairo',sans-serif; margin-bottom:8px;">
+        <div style="
+            color:#D4AF37;
+            font-weight:700;
+            font-size:18px;
+            font-family:'Cairo',sans-serif;
+            margin-bottom:8px;
+        ">
             🏦 NBE Credit Risk Intelligence
         </div>
-        <div style="color:rgba(255,255,255,0.5); font-size:14px; line-height:1.6;">
+        <div style="
+            color:rgba(255,255,255,0.5);
+            font-size:14px;
+            line-height:1.6;
+        ">
             © 2026 National Bank of Egypt<br>
             Developed by <strong style="color:#D4AF37;">ENG. Goda Emad</strong> | Version 3.0
         </div>
     </div>
-    <div style="display:flex; gap:14px; flex-wrap:wrap;">
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
         <a href="https://www.linkedin.com/in/goda-emad/"
            target="_blank" style="
             background: rgba(10,102,194,0.2);
@@ -505,10 +656,11 @@ st.markdown("""
             font-family: 'Cairo', sans-serif;
             transition: all 0.3s;
             display: inline-block;
-        " onmouseover="this.style.background='rgba(10,102,194,0.3)';this.style.transform='translateY(-2px)';"
+        " onmouseover="this.style.background='rgba(10,102,194,0.35)';this.style.transform='translateY(-2px)';"
            onmouseout="this.style.background='rgba(10,102,194,0.2)';this.style.transform='translateY(0)';">
-           🔗 LinkedIn - ENG.Goda Emad
+           🔗 LinkedIn - ENG. Goda Emad
         </a>
+
         <a href="https://github.com/Goda-Emad/NBE-Credit-Risk-Intelligence-"
            target="_blank" style="
             background: rgba(255,255,255,0.05);
@@ -522,22 +674,10 @@ st.markdown("""
             font-family: 'Cairo', sans-serif;
             transition: all 0.3s;
             display: inline-block;
-        " onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.transform='translateY(-2px)';"
+        " onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.transform='translateY(-2px)';"
            onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.transform='translateY(0)';">
            ⭐ GitHub Project
         </a>
     </div>
 </div>
 """, unsafe_allow_html=True)
-"""
-Project Structure:
-
-NBE-Credit-Risk-Intelligence/
-├── assets/
-│   └── nbe_branding/
-│       ├── banner.png
-│       └── nbe_logo.jpg
-└── streamlit_app/
-    └── pages/
-        └── 1_🏠_Home.py
-"""
