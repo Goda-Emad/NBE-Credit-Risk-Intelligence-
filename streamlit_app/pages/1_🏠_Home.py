@@ -521,15 +521,3 @@ st.markdown("""
 """, unsafe_allow_html=True)
 ```
 
----
-
-## 📂 الهيكل المطلوب:
-```
-NBE-Credit-Risk-Intelligence/
-├── assets/
-│   └── nbe_branding/
-│       ├── banner.png          ← صورة البانر
-│       └── nbe_logo.jpg        ← شعار البنك الأهلي
-└── streamlit_app/
-    └── pages/
-        └── 1_🏠_Home.py        ← الكود اللي فوق
