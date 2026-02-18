@@ -148,10 +148,43 @@ css = (
     ':root {'
     '  --gold:#C9A84C; --gold-l:#E8C97A;'
     '  --bg:#001f15; --border:rgba(201,168,76,0.25); --gray:#8a9bb0;'
+    '  --text-primary:#1a1a1a; --text-secondary:#4a5568;'
     '}'
     'html,body,[class*="css"]{'
     f'  font-family:Cairo,sans-serif!important;'
-    f'  background:#001f15!important;color:#fff!important;direction:{direction};}}'
+    f'  background:#001f15!important;direction:{direction};}}'
+    
+    # ===== FIX: Text colors for light mode =====
+    'body, [data-testid="stMarkdown"], [data-testid="stText"], p, span, div {'
+    '  color:#1a1a1a!important;}'
+    
+    '[data-theme="light"] body, '
+    '[data-theme="light"] [data-testid="stMarkdown"], '
+    '[data-theme="light"] p, '
+    '[data-theme="light"] span, '
+    '[data-theme="light"] div {'
+    '  color:#1a1a1a!important;}'
+    
+    # ===== Sidebar stays dark =====
+    '[data-testid="stSidebar"] *, '
+    '[data-testid="stSidebar"] p, '
+    '[data-testid="stSidebar"] span, '
+    '[data-testid="stSidebar"] div {'
+    '  color:rgba(255,255,255,0.9)!important;}'
+    
+    # ===== Headings =====
+    'h1, h2, h3, h4, h5, h6 {'
+    '  color:#1a1a1a!important;}'
+    
+    # ===== Form labels =====
+    '.stSelectbox label, .stNumberInput label, .stSlider label {'
+    '  color:#2d3748!important;font-weight:600!important;font-size:13px!important;}'
+    
+    # ===== Metrics =====
+    '[data-testid="stMetricLabel"]{'
+    '  color:#4a5568!important;font-size:12px!important;'
+    '  font-weight:700!important;text-transform:uppercase;letter-spacing:0.5px;}'
+    
     '#MainMenu,footer,header{visibility:hidden}'
     '.block-container{padding:1rem 2rem 3rem!important;max-width:1400px}'
     '[data-testid="stSidebar"]{'
@@ -160,30 +193,30 @@ css = (
     '[data-testid="stSidebar"]::before{'
     '  content:"";position:absolute;top:0;left:0;right:0;height:4px;'
     '  background:linear-gradient(90deg,#C9A84C,#E8C97A,#C9A84C);}'
-    '[data-testid="stSidebar"] *{color:rgba(255,255,255,0.9)!important;}'
+    
     '[data-testid="stSidebar"] .stSelectbox>div>div{'
     '  background:rgba(255,255,255,0.08)!important;'
     '  border:1px solid rgba(201,168,76,0.35)!important;border-radius:10px!important;}'
+    
     '.stSelectbox>div>div,.stNumberInput>div>div>input{'
-    '  background:rgba(255,255,255,0.05)!important;'
-    '  border:1px solid rgba(201,168,76,0.2)!important;'
-    '  border-radius:10px!important;color:#fff!important;}'
-    '.stSelectbox label,.stNumberInput label,.stSlider label{'
-    '  color:rgba(255,255,255,0.75)!important;font-weight:600!important;font-size:13px!important;}'
+    '  background:rgba(255,255,255,0.95)!important;'
+    '  border:1px solid rgba(201,168,76,0.3)!important;'
+    '  border-radius:10px!important;color:#1a1a1a!important;}'
+    
     '[data-testid="stMetricValue"]{'
     '  color:#C9A84C!important;font-size:2rem!important;'
     '  font-weight:900!important;font-family:JetBrains Mono,monospace!important;'
     '  animation:countAnim 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;}'
-    '[data-testid="stMetricLabel"]{color:#8a9bb0!important;font-size:12px!important;'
-    '  font-weight:700!important;text-transform:uppercase;letter-spacing:0.5px;}'
+    
     '[data-testid="metric-container"]{'
-    '  background:rgba(255,255,255,0.04)!important;'
+    '  background:rgba(249,250,251,0.5)!important;'
     '  border:1px solid rgba(201,168,76,0.2)!important;'
     '  border-top:3px solid #C9A84C!important;'
     '  border-radius:14px!important;padding:18px 20px!important;'
     '  transition:transform 0.3s,box-shadow 0.3s!important;}'
     '[data-testid="metric-container"]:hover{transform:translateY(-4px)!important;'
     '  box-shadow:0 12px 30px rgba(201,168,76,0.15)!important;}'
+    
     '.stButton>button{'
     '  background:linear-gradient(135deg,#C9A84C,#a07a1e)!important;'
     '  color:#001208!important;font-weight:800!important;border:none!important;'
@@ -195,6 +228,7 @@ css = (
     '.stButton>button:hover{'
     '  transform:translateY(-3px)!important;'
     '  box-shadow:0 12px 35px rgba(201,168,76,0.6)!important;}'
+    
     '@keyframes countAnim{from{opacity:0;transform:scale(0.5) translateY(20px)}'
     '  to{opacity:1;transform:scale(1) translateY(0)}}'
     '@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}'
@@ -204,12 +238,12 @@ css = (
     '@keyframes pulseResult{0%,100%{box-shadow:0 0 20px rgba(201,168,76,0.15)}'
     '  50%{box-shadow:0 0 50px rgba(201,168,76,0.4)}}'
     '@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}'
+    
     'hr{border-color:rgba(201,168,76,0.15)!important;margin:2rem 0!important;}'
     '.sec-card{border-radius:16px;padding:20px 24px;margin-bottom:20px;'
+    '  background:rgba(249,250,251,0.3)!important;'
     '  animation:fadeInUp 0.5s ease backwards;}'
 )
-st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
-
 # ── SIDEBAR ───────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
