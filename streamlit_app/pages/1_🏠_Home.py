@@ -1,3 +1,7 @@
+"""
+NBE Credit Risk Intelligence - Home Page
+Professional UI - National Bank of Egypt (البنك الأهلي المصري)
+"""
 import streamlit as st
 from pathlib import Path
 import base64
@@ -10,120 +14,283 @@ st.set_page_config(
 )
 
 # ============================================================
-# Helper: Load Image as Base64 (Updated for Cloud & Local)
+# Language Selection (Session State)
 # ============================================================
-def get_image_base64(image_name):
-    """
-    دالة محسنة للبحث عن الصورة في أكثر من مكان لضمان عملها على السيرفر
-    """
-    # البحث في نفس مجلد ملف الكود أو مجلد assets
-    current_dir = Path(__file__).parent
-    potential_paths = [
-        current_dir / image_name,
-        current_dir / "assets" / "nbe_branding" / image_name,
-        current_dir.parent / "assets" / "nbe_branding" / image_name
-    ]
-    
-    for path in potential_paths:
-        if path.exists():
-            try:
-                with open(path, "rb") as f:
-                    return base64.b64encode(f.read()).decode()
-            except Exception:
-                continue
-    return None
-
-# تحميل البانر فقط كما طلبت (بدون لوجو)
-banner_b64 = get_image_base64("banner.png")
+if 'language' not in st.session_state:
+    st.session_state.language = 'ar'  # Default: Arabic
 
 # ============================================================
-# Global CSS - Optimized for White Background & Horizontal Layouts
+# Load Banner Image
 # ============================================================
-st.markdown("""
+def get_image_base64(image_path):
+    """Convert image to base64 for HTML embedding"""
+    try:
+        with open(image_path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    except:
+        return None
+
+# Find banner in assets/images/
+possible_paths = [
+    Path(__file__).parent.parent.parent / "assets" / "images" / "banner.png",
+    Path("assets") / "images" / "banner.png",
+    Path("../assets") / "images" / "banner.png",
+]
+
+banner_b64 = None
+for banner_path in possible_paths:
+    if banner_path.exists():
+        banner_b64 = get_image_base64(banner_path)
+        break
+
+# ============================================================
+# Translations
+# ============================================================
+TRANSLATIONS = {
+    'ar': {
+        'title': 'منصة الذكاء الاصطناعي لتقييم مخاطر الائتمان',
+        'subtitle': 'البنك الأهلي المصري',
+        'description': 'منصة ذكاء اصطناعي متكاملة لتقييم مخاطر الائتمان في الوقت الفعلي، مبنية على نموذج Random Forest بدقة 76.5% ومتوافقة بالكامل مع معايير البنك المركزي المصري',
+        'badge_cbe': 'متوافق مع البنك المركزي',
+        'badge_ai': 'مدعوم بالذكاء الاصطناعي',
+        'badge_realtime': 'الوقت الفعلي',
+        'badge_secure': 'آمن ومحمي',
+        'badge_features': '73 ميزة',
+        'badge_trees': '100 شجرة',
+        'metric1': 'دقة النموذج',
+        'metric2': 'الميزات',
+        'metric3': 'بيانات التدريب',
+        'metric4': 'أشجار القرار',
+        'capabilities': 'قدرات المنصة',
+        'cap1_title': 'تقييم ذكي',
+        'cap1_desc': 'تقييم فوري لمخاطر الائتمان باستخدام Random Forest مع 73 ميزة هندسية. النتائج في أقل من ثانيتين.',
+        'cap2_title': 'تحليلات المحفظة',
+        'cap2_desc': 'رؤى شاملة للمحفظة، تحليل الاتجاهات، ومقاييس الأداء في لوحات تحكم تفاعلية.',
+        'cap3_title': 'متوافق مع البنك المركزي',
+        'cap3_desc': 'مسار تدقيق كامل، قرارات ذكاء اصطناعي قابلة للتفسير، والامتثال التنظيمي الكامل للبنك المركزي المصري.',
+        'cap4_title': 'مراقبة النموذج',
+        'cap4_desc': 'تتبع أداء النموذج في الوقت الفعلي، كشف الانحراف، وخط إعادة تدريب تلقائي.',
+        'cap5_title': 'قرارات فورية',
+        'cap5_desc': 'تنبؤات بأقل من ثانية مع درجات احتمالية وتوصيات تفصيلية لموظفي القروض.',
+        'cap6_title': 'إعادة تدريب تلقائية',
+        'cap6_desc': 'خط MLOps مع إعادة تدريب تلقائية للنموذج عند انخفاض الأداء تحت العتبة المحددة.',
+        'quickstart': 'دليل البدء السريع',
+        'step1': 'تقييم المخاطر',
+        'step1_desc': 'انتقل إلى صفحة تقييم المخاطر',
+        'step2': 'إدخال البيانات',
+        'step2_desc': 'أدخل معلومات العميل في النموذج',
+        'step3': 'الحصول على القرار',
+        'step3_desc': 'احصل على تنبؤ فوري بالذكاء الاصطناعي',
+        'step4': 'عرض التحليلات',
+        'step4_desc': 'استكشف رؤى المحفظة',
+        'tech_stack': 'التقنيات المستخدمة',
+        'performance': 'مقاييس الأداء',
+        'test_accuracy': 'دقة الاختبار',
+        'precision': 'الدقة',
+        'recall': 'الاستدعاء',
+        'f1_score': 'F1-Score',
+        'false_negatives': 'سلبيات كاذبة',
+        'training_time': 'وقت التدريب',
+        'footer_title': 'منصة الذكاء الاصطناعي لتقييم مخاطر الائتمان',
+        'footer_bank': 'البنك الأهلي المصري',
+        'footer_rights': '© 2026 البنك الأهلي المصري',
+        'footer_dev': 'تطوير',
+        'footer_version': 'الإصدار 3.0',
+    },
+    'en': {
+        'title': 'Credit Risk Intelligence Platform',
+        'subtitle': 'National Bank of Egypt',
+        'description': 'AI-powered credit risk assessment platform with Random Forest model achieving 76.5% accuracy, fully compliant with Central Bank of Egypt regulations',
+        'badge_cbe': 'CBE Compliant',
+        'badge_ai': 'AI Powered',
+        'badge_realtime': 'Real-time',
+        'badge_secure': 'Secure',
+        'badge_features': '73 Features',
+        'badge_trees': '100 Trees',
+        'metric1': 'Model Accuracy',
+        'metric2': 'Features',
+        'metric3': 'Training Data',
+        'metric4': 'Decision Trees',
+        'capabilities': 'Platform Capabilities',
+        'cap1_title': 'Smart Assessment',
+        'cap1_desc': 'Real-time credit risk evaluation using Random Forest with 73 engineered features. Results in under 2 seconds.',
+        'cap2_title': 'Portfolio Analytics',
+        'cap2_desc': 'Comprehensive portfolio insights, trend analysis, and performance metrics in interactive dashboards.',
+        'cap3_title': 'CBE Compliant',
+        'cap3_desc': 'Full audit trail, explainable AI decisions, and complete regulatory compliance with Central Bank of Egypt.',
+        'cap4_title': 'Model Monitoring',
+        'cap4_desc': 'Real-time model performance tracking, drift detection, and automated retraining pipeline.',
+        'cap5_title': 'Instant Decisions',
+        'cap5_desc': 'Sub-second predictions with probability scores and detailed recommendations for loan officers.',
+        'cap6_title': 'Auto Retraining',
+        'cap6_desc': 'MLOps pipeline with automated model retraining when performance degrades below threshold.',
+        'quickstart': 'Quick Start Guide',
+        'step1': 'Risk Assessment',
+        'step1_desc': 'Go to Risk Assessment page',
+        'step2': 'Fill Details',
+        'step2_desc': 'Enter customer information',
+        'step3': 'Get Decision',
+        'step3_desc': 'Get instant AI prediction',
+        'step4': 'View Analytics',
+        'step4_desc': 'Explore portfolio insights',
+        'tech_stack': 'Technology Stack',
+        'performance': 'Performance Metrics',
+        'test_accuracy': 'Test Accuracy',
+        'precision': 'Precision',
+        'recall': 'Recall',
+        'f1_score': 'F1-Score',
+        'false_negatives': 'False Negatives',
+        'training_time': 'Training Time',
+        'footer_title': 'NBE Credit Risk Intelligence',
+        'footer_bank': 'National Bank of Egypt',
+        'footer_rights': '© 2026 National Bank of Egypt',
+        'footer_dev': 'Developed by',
+        'footer_version': 'Version 3.0',
+    }
+}
+
+lang = st.session_state.language
+t = TRANSLATIONS[lang]
+
+# ============================================================
+# CSS - Professional NBE Banking Theme
+# ============================================================
+direction = 'rtl' if lang == 'ar' else 'ltr'
+text_align = 'right' if lang == 'ar' else 'left'
+
+st.markdown(f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cairo:wght@400;600;700;800&display=swap');
 
-/* الأساسيات: تغيير الخط والألوان لتناسب الخلفية البيضاء */
-:root {
-    --nbe-dark:    #003d28; /* أخضر البنك الأهلي الداكن */
-    --nbe-green:   #006341; /* أخضر البنك المتوسط */
-    --nbe-gold:    #D4AF37; /* اللون الذهبي */
-    --text-main:   #1a1a1a; /* أسود خفيف للنصوص الأساسية */
-    --text-sub:    #444444; /* رمادي غامق للنصوص الفرعية */
-    --bg-light:    #f9fbf9; /* خلفية فاتحة جداً مريحة للعين */
-}
+/* ========== Root Variables - NBE Colors ========== */
+:root {{
+    --nbe-dark-green:  #004d34;
+    --nbe-green:       #006341;
+    --nbe-light-green: #008a57;
+    --nbe-gold:        #D4AF37;
+    --nbe-cream:       #f9f6f0;
+    --nbe-white:       #ffffff;
+    --nbe-text-dark:   #1a1a1a;
+    --nbe-gray:        #666666;
+}}
 
-html, body, [class*="css"] {
+/* ========== Global Styles ========== */
+html, body, [class*="css"] {{
     font-family: 'Cairo', sans-serif;
-    color: var(--text-main) !important;
-}
+    background-color: var(--nbe-cream) !important;
+    color: var(--nbe-text-dark) !important;
+    direction: {direction};
+}}
 
-/* تعديل الـ Banner ليكون متجاوب وحجمه مناسب للعرض */
-.banner-container {
+/* Hide Streamlit branding */
+#MainMenu, footer, header {{ visibility: hidden; }}
+.block-container {{ padding: 0 2rem 2rem !important; }}
+
+/* ========== Sidebar ========== */
+[data-testid="stSidebar"] {{
+    background: linear-gradient(180deg, #004d34 0%, #006341 100%) !important;
+    border-{text_align}: 2px solid var(--nbe-gold);
+}}
+[data-testid="stSidebar"] * {{ color: var(--nbe-white) !important; }}
+[data-testid="stSidebar"] .stRadio label {{
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 5px 0;
+    transition: all 0.3s;
+    font-weight: 600;
+}}
+[data-testid="stSidebar"] .stRadio label:hover {{
+    background: rgba(212,175,55,0.25);
+    border-{text_align}: 3px solid var(--nbe-gold);
+    transform: translateX({'-5px' if lang == 'ar' else '5px'});
+}}
+
+/* ========== Metrics ========== */
+[data-testid="stMetricValue"] {{
+    color: var(--nbe-dark-green) !important;
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
+}}
+[data-testid="stMetricLabel"] {{
+    color: var(--nbe-gray) !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}}
+[data-testid="stMetricDelta"] {{
+    color: var(--nbe-green) !important;
+    font-weight: 700 !important;
+}}
+
+/* ========== Buttons ========== */
+.stButton > button {{
+    background: linear-gradient(135deg, var(--nbe-gold), #b8962e) !important;
+    color: var(--nbe-dark-green) !important;
+    font-weight: 700 !important;
+    font-family: 'Cairo', sans-serif !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 14px 32px !important;
+    font-size: 16px !important;
+    transition: all 0.3s !important;
+    box-shadow: 0 6px 20px rgba(212,175,55,0.4) !important;
+}}
+.stButton > button:hover {{
+    transform: translateY(-3px) !important;
+    box-shadow: 0 10px 30px rgba(212,175,55,0.6) !important;
+}}
+
+/* ========== Divider ========== */
+hr {{ 
+    border-color: rgba(0,99,65,0.2) !important;
+    margin: 2rem 0 !important;
+}}
+
+/* ========== Banner ========== */
+.banner-container {{
     width: 100%;
-    max-height: 280px; /* تقليل الارتفاع قليلاً ليكون متناسق مع العرض */
+    max-width: 1200px;
+    margin: 20px auto 30px;
+    border-radius: 16px;
     overflow: hidden;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 24px rgba(0,61,40,0.12); /* ظل أخضر خفيف */
-    border: 1px solid rgba(0,61,40,0.05);
-}
-
-.banner-img {
+    box-shadow: 0 15px 50px rgba(0,77,52,0.25);
+}}
+.banner-img {{
     width: 100%;
     height: auto;
-    object-fit: cover;
-}
+    display: block;
+}}
 
-/* حل مشكلة التكنولوجيا: تصميم أفقي (Horizontal Tech Stack) */
-.tech-container-horizontal {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.tech-card-mini {
-    background: white;
-    border-left: 4px solid var(--nbe-gold);
-    border-radius: 8px;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.2s;
-}
-
-.tech-card-mini:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* إخفاء الهيدر الافتراضي لستريمليت */
-header {visibility: hidden;}
-
-/* تحسين شكل المقياس (Metric) ليناسب الخلفية البيضاء */
-[data-testid="stMetric"] {
-    background: #ffffff;
-    padding: 15px;
+/* ========== Language Toggle ========== */
+.language-toggle {{
+    position: fixed;
+    top: 20px;
+    {text_align}: 20px;
+    z-index: 999;
+    background: var(--nbe-white);
+    border: 2px solid var(--nbe-gold);
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
-}
-
-[data-testid="stMetricValue"] {
-    color: var(--nbe-dark) !important;
-}
-
-[data-testid="stMetricLabel"] {
-    color: var(--text-sub) !important;
-}
+    padding: 8px 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}}
 </style>
 """, unsafe_allow_html=True)
+
 # ============================================================
-# 1. Display Banner
+# Language Toggle Button (Top Right/Left)
+# ============================================================
+col_lang1, col_lang2, col_lang3 = st.columns([6, 1, 1])
+with col_lang2:
+    if st.button("🇪🇬 عربي", use_container_width=True):
+        st.session_state.language = 'ar'
+        st.rerun()
+with col_lang3:
+    if st.button("🇬🇧 EN", use_container_width=True):
+        st.session_state.language = 'en'
+        st.rerun()
+
+# ============================================================
+# BANNER IMAGE (Full Width, Proper Size)
 # ============================================================
 if banner_b64:
     st.markdown(f"""
@@ -131,294 +298,131 @@ if banner_b64:
         <img src="data:image/png;base64,{banner_b64}" class="banner-img" alt="NBE Banner">
     </div>
     """, unsafe_allow_html=True)
-else:
-    # رسالة تنبيه بسيطة وواضحة في حالة عدم وجود الصورة على السيرفر
-    st.warning("⚠️ Banner image 'banner.png' not found. Please ensure it's in the project folder for Streamlit Cloud.")
 
 # ============================================================
-# 2. Hero Section (Title & Description) - Optimized for Visibility
+# HERO SECTION
 # ============================================================
-st.markdown("""
-<div style="padding: 10px 0 30px 0;">
-    <h1 style="color: #003d28; font-family: 'Cairo', sans-serif; font-size: 38px; font-weight: 700; margin-bottom: 5px;">
-        Credit Risk Intelligence
-    </h1>
-    <p style="color: #D4AF37; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase;">
-        National Bank of Egypt | البنك الأهلي المصري
-    </p>
-    <div style="max-width: 850px; border-left: 5px solid #003d28; padding-left: 20px;">
-        <p style="color: #444444; font-family: 'Cairo', sans-serif; font-size: 19px; line-height: 1.6; margin: 0;">
-            منصة ذكاء اصطناعي متطورة لتقييم الجدارة الائتمانية وتحليل مخاطر القروض في الوقت الفعلي، 
-            مبنية على خوارزميات <strong>Random Forest</strong> بدقة تصل إلى <strong>76.5%</strong>.
-        </p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-# ============================================================
-# CSS - Professional NBE "Light & Elegant" Theme
-# ============================================================
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cairo:wght@400;600;700&display=swap');
-
-/* Root Variables - Optimized for Visibility */
-:root {
-    --nbe-dark:    #003d28; /* الأخضر الغامق للبنك */
-    --nbe-gold:    #D4AF37; /* الذهبي */
-    --text-main:   #1a1a1a; /* أسود صريح للنصوص */
-    --text-sub:    #444444; /* رمادي غامق جداً */
-    --bg-light:    #ffffff; /* خلفية بيضاء صريحة */
-    --sidebar-bg:  #f4f7f6; /* لون سايدبار هادئ */
-}
-
-/* Global Styles */
-html, body, [class*="css"] {
-    font-family: 'Cairo', sans-serif;
-    background-color: var(--bg-light) !important;
-    color: var(--text-main) !important;
-}
-
-/* Hide Streamlit defaults */
-#MainMenu, footer, header { visibility: hidden; }
-.block-container { padding: 1rem 3rem 3rem !important; }
-
-/* Sidebar - Light Mode Professional */
-[data-testid="stSidebar"] {
-    background-color: var(--sidebar-bg) !important;
-    border-right: 2px solid var(--nbe-dark);
-}
-
-/* Sidebar Text Fix */
-[data-testid="stSidebar"] * { 
-    color: var(--nbe-dark) !important; 
-}
-
-/* Sidebar Radio Buttons Fix */
-[data-testid="stSidebar"] .stRadio label {
-    background: rgba(0, 61, 40, 0.05);
-    border-radius: 10px;
-    padding: 10px 15px;
-    margin: 5px 0;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-[data-testid="stSidebar"] .stRadio label:hover {
-    background: rgba(212, 175, 55, 0.1);
-    border-left: 5px solid var(--nbe-gold);
-    color: var(--nbe-dark) !important;
-}
-
-/* Metrics - High Contrast */
-[data-testid="stMetric"] {
-    background: white !important;
-    border: 1px solid #eee !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
-    border-radius: 15px !important;
-    padding: 20px !important;
-}
-[data-testid="stMetricValue"] {
-    color: var(--nbe-dark) !important;
-    font-size: 2.2rem !important;
-    font-weight: 800 !important;
-}
-[data-testid="stMetricLabel"] { 
-    color: var(--text-sub) !important; 
-    font-weight: 600 !important;
-}
-
-/* Buttons - Gold Theme */
-.stButton > button {
-    background: linear-gradient(135deg, var(--nbe-dark) 0%, #005236 100%) !important;
-    color: white !important; /* النص أبيض هنا لأن الخلفية غامقة */
-    font-weight: 700 !important;
-    border: none !important;
-    border-radius: 12px !important;
-    padding: 15px 35px !important;
-    transition: all 0.4s !important;
-    box-shadow: 0 4px 15px rgba(0,61,40,0.2) !important;
-}
-.stButton > button:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: 0 8px 25px rgba(0,61,40,0.3) !important;
-    background: var(--nbe-gold) !important;
-    color: var(--nbe-dark) !important;
-}
-
-/* Banner Image Adjustment */
-.banner-img {
-    width: 100%;
-    max-height: 250px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-}
-
-/* Horizontal Technology Tags */
-.tech-tag {
-    display: inline-block;
-    padding: 8px 18px;
-    background: #f0f2f1;
-    border: 1px solid var(--nbe-dark);
-    color: var(--nbe-dark);
-    border-radius: 50px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-</style>
-""", unsafe_allow_html=True)
-# ============================================================
-# BANNER IMAGE (Full Width & Responsive)
-# ============================================================
-if banner_b64:
-    st.markdown(f"""
-    <div style="margin: 10px 0 25px 0;">
-        <img src="data:image/png;base64,{banner_b64}" class="banner-img" alt="NBE Banner Intelligence">
-    </div>
-    """, unsafe_allow_html=True)
-else:
-    # رسالة بديلة احترافية في حالة عدم تحميل الصورة
-    st.markdown("""
-        <div style="background-color: #f0f2f1; padding: 40px; border-radius: 15px; text-align: center; border: 1px dashed #003d28;">
-            <h2 style="color: #003d28; margin: 0;">NBE Credit Risk Intelligence</h2>
-            <p style="color: #D4AF37;">National Bank of Egypt | AI Assessment Platform</p>
-        </div>
-    """, unsafe_allow_html=True)
-# ============================================================
-# HERO SECTION - Light & Professional (NBE Theme)
-# ============================================================
-# تم تحويل التصميم من Dark لـ Light لضمان وضوح الخطوط
-hero_html = f"""
+st.markdown(f"""
 <div style="
-    background: #ffffff;
+    background: linear-gradient(135deg, var(--nbe-white) 0%, var(--nbe-cream) 100%);
+    border: 2px solid var(--nbe-gold);
     border-radius: 20px;
-    padding: 30px 0px;
-    margin: -10px 0 30px;
+    padding: 50px 45px;
+    margin: 0 0 35px;
     position: relative;
-    border-bottom: 2px solid #f0f0f0;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,99,65,0.15);
+    text-align: {text_align};
 ">
+    <!-- Decorative Elements -->
+    <div style="
+        position: absolute; top: -60px; {'right' if lang == 'ar' else 'left'}: -60px;
+        width: 250px; height: 250px;
+        border-radius: 50%;
+        border: 3px solid rgba(0,99,65,0.08);
+    "></div>
+    <div style="
+        position: absolute; bottom: -40px; {'left' if lang == 'ar' else 'right'}: -40px;
+        width: 180px; height: 180px;
+        border-radius: 50%;
+        border: 3px solid rgba(212,175,55,0.15);
+    "></div>
+
+    <!-- Title Section -->
     <div style="margin-bottom: 20px;">
         <div style="
             font-family: 'Cairo', sans-serif;
             font-size: 14px;
-            color: #D4AF37;
+            color: var(--nbe-gold);
             letter-spacing: 3px;
             text-transform: uppercase;
+            margin-bottom: 8px;
             font-weight: 700;
-            margin-bottom: 5px;
-        ">National Bank of Egypt | البنك الأهلي المصري</div>
-        <h1 style="
+        ">{t['subtitle']}</div>
+        <div style="
             font-family: 'Playfair Display', serif;
-            font-size: 45px;
-            font-weight: 800;
-            color: #003d28; /* أخضر البنك الأهلي الداكن */
-            line-height: 1.1;
-            margin: 0;
-        ">Credit Risk Intelligence</h1>
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--nbe-dark-green);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        ">{t['title']}</div>
     </div>
 
+    <!-- Description -->
     <p style="
-        color: #444444; /* رمادي داكن للوضوح */
-        font-size: 19px;
-        max-width: 800px;
-        line-height: 1.6;
-        margin: 0 0 25px;
-        font-family: 'Cairo', sans-serif;
+        color: var(--nbe-gray);
+        font-size: 18px;
+        max-width: 850px;
+        line-height: 1.9;
+        margin: 0 {'auto 0 0' if lang == 'ar' else '0 0 auto'} 30px;
+        font-weight: 500;
     ">
-        منصة ذكاء اصطناعي متكاملة لتقييم مخاطر الائتمان في الوقت الفعلي، 
-        مبنية على نموذج <span style="color:#003d28; font-weight:700;">Random Forest</span> بدقة <strong style="color:#D4AF37; font-size:22px;">76.5%</strong> 
-        وموافقة لمعايير البنك المركزي المصري.
+        {t['description']}
     </p>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <span style="background:rgba(0, 61, 40, 0.05); border:1px solid #003d28;
-              color:#003d28; padding:8px 16px; border-radius:50px; font-size:13px; font-weight:700;">
-            ✅ CBE Compliant
+    <!-- Badges -->
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: {'flex-start' if lang == 'ar' else 'flex-start'};">
+        <span style="background:rgba(0,99,65,0.1); border:2px solid rgba(0,99,65,0.3);
+              color:var(--nbe-dark-green); padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+            ✅ {t['badge_cbe']}
         </span>
-        <span style="background:rgba(212, 175, 55, 0.1); border:1px solid #D4AF37;
-              color:#D4AF37; padding:8px 16px; border-radius:50px; font-size:13px; font-weight:700;">
-            🤖 AI Powered
+        <span style="background:rgba(74,222,128,0.15); border:2px solid rgba(74,222,128,0.4);
+              color:#15803d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+            🤖 {t['badge_ai']}
         </span>
-        <span style="background:#f8f9fa; border:1px solid #ddd;
-              color:#555; padding:8px 16px; border-radius:50px; font-size:13px; font-weight:700;">
-            ⚡ Real-time
+        <span style="background:rgba(59,130,246,0.15); border:2px solid rgba(59,130,246,0.4);
+              color:#1d4ed8; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+            ⚡ {t['badge_realtime']}
         </span>
-        <span style="background:#f8f9fa; border:1px solid #ddd;
-              color:#555; padding:8px 16px; border-radius:50px; font-size:13px; font-weight:700;">
-            📊 73 Features
+        <span style="background:rgba(168,85,247,0.15); border:2px solid rgba(168,85,247,0.4);
+              color:#7c3aed; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+            🔒 {t['badge_secure']}
+        </span>
+        <span style="background:rgba(212,175,55,0.15); border:2px solid rgba(212,175,55,0.5);
+              color:#92400e; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+            📊 {t['badge_features']}
+        </span>
+        <span style="background:rgba(236,72,153,0.15); border:2px solid rgba(236,72,153,0.4);
+              color:#be185d; padding:8px 18px; border-radius:25px; font-size:14px; font-weight:700;">
+            🌲 {t['badge_trees']}
         </span>
     </div>
 </div>
-"""
-
-st.markdown(hero_html, unsafe_allow_html=True)
-# ============================================================
-# METRICS ROW - Enhanced Visibility
-# ============================================================
-# إنشاء الأعمدة الأربعة (تنسيق أفقي طبيعي في Streamlit)
-col1, col2, col3, col4 = st.columns(4)
-
-metrics = [
-    ("🎯 Model Accuracy", "76.5%", "+2.3%"),
-    ("⚡ Features",        "73",     "Engineered"),
-    ("📊 Training Data",  "800",    "Samples"),
-    ("🌲 Decision Trees", "100",    "Random Forest"),
-]
-
-# استخدام CSS داخلي لضمان وضوح أرقام الـ Metrics
-st.markdown("""
-<style>
-    /* تحسين ألوان المقياس ليناسب الخلفية البيضاء */
-    [data-testid="stMetricValue"] {
-        color: #003d28 !important; /* أخضر البنك الأهلي الداكن */
-        font-weight: 700;
-    }
-    [data-testid="stMetricLabel"] p {
-        color: #444444 !important; /* رمادي داكن للعنوان */
-        font-size: 16px !important;
-    }
-    [data-testid="stMetricDelta"] div {
-        color: #D4AF37 !important; /* ذهبي للزيادة أو التفاصيل */
-    }
-</style>
 """, unsafe_allow_html=True)
 
-for col, (label, value, delta) in zip([col1, col2, col3, col4], metrics):
-    with col:
-        # قمنا بتغليف المقياس داخل Container لإعطائه مظهر الكارت الأبيض
-        with st.container():
-            st.metric(label, value, delta)
+# ============================================================
+# METRICS ROW
+# ============================================================
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.metric(t['metric1'], "76.5%", "+2.3%")
+with col2:
+    st.metric(t['metric2'], "73", t['metric2'])
+with col3:
+    st.metric(t['metric3'], "800", t['metric3'])
+with col4:
+    st.metric(t['metric4'], "100", "Random Forest")
 
-st.markdown("<hr style='border-color: #eee;'>", unsafe_allow_html=True)
+st.markdown("---")
+
 # ============================================================
-# FEATURE CARDS
+# CAPABILITIES CARDS
 # ============================================================
-st.markdown("""
-<h2 style="color:#D4AF37; font-family:'Playfair Display',serif;
-    font-size:28px; margin-bottom:20px;">
-    🎯 Platform Capabilities
+st.markdown(f"""
+<h2 style="color:var(--nbe-dark-green); font-family:'Playfair Display',serif;
+    font-size:32px; margin-bottom:25px; text-align:{text_align}; font-weight:900;">
+    🎯 {t['capabilities']}
 </h2>
 """, unsafe_allow_html=True)
 
 cards = [
-    ("🎯", "Smart Assessment",
-     "تقييم فوري لمخاطر الائتمان باستخدام Random Forest مع 73 ميزة هندسية. النتائج في أقل من ثانيتين.",
-     "#D4AF37"),
-    ("📊", "Portfolio Analytics",
-     "رؤى شاملة للمحفظة، تحليل الاتجاهات، ومقاييس الأداء في لوحات تحكم تفاعلية.",
-     "#4ade80"),
-    ("🔒", "CBE Compliant",
-     "مسار تدقيق كامل، قرارات ذكاء اصطناعي قابلة للتفسير، والامتثال التنظيمي الكامل للبنك المركزي المصري.",
-     "#60a5fa"),
-    ("📈", "Model Monitoring",
-     "تتبع أداء النموذج في الوقت الفعلي، كشف الانحراف، وخط إعادة تدريب تلقائي.",
-     "#a78bfa"),
-    ("⚡", "Instant Decisions",
-     "تنبؤات بأقل من ثانية مع درجات احتمالية وتوصيات تفصيلية لموظفي القروض.",
-     "#fb923c"),
-    ("🔄", "Auto Retraining",
-     "خط MLOps مع إعادة تدريب تلقائية للنموذج عند انخفاض الأداء تحت العتبة المحددة.",
-     "#f472b6"),
+    ("🎯", t['cap1_title'], t['cap1_desc'], "#D4AF37"),
+    ("📊", t['cap2_title'], t['cap2_desc'], "#15803d"),
+    ("🔒", t['cap3_title'], t['cap3_desc'], "#1d4ed8"),
+    ("📈", t['cap4_title'], t['cap4_desc'], "#7c3aed"),
+    ("⚡", t['cap5_title'], t['cap5_desc'], "#ea580c"),
+    ("🔄", t['cap6_title'], t['cap6_desc'], "#be185d"),
 ]
 
 c1, c2, c3 = st.columns(3)
@@ -427,207 +431,206 @@ for i, (icon, title, desc, color) in enumerate(cards):
     with cols[i % 3]:
         st.markdown(f"""
         <div style="
-            background: linear-gradient(135deg, #002a1c, #003d28);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-top: 3px solid {color};
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
+            background: var(--nbe-white);
+            border: 2px solid rgba(0,99,65,0.1);
+            border-top: 5px solid {color};
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 20px;
             transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
             height: 100%;
-        ">
-            <div style="font-size:40px; margin-bottom:14px;">{icon}</div>
-            <h3 style="color:{color}; font-size:19px; margin:0 0 12px;
-                font-family:'Cairo',sans-serif; font-weight:700;">{title}</h3>
-            <p style="color:rgba(255,255,255,0.7); font-size:14px;
-                line-height:1.8; margin:0;">{desc}</p>
+            text-align: {text_align};
+        " onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 40px rgba(0,99,65,0.2)';"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 25px rgba(0,0,0,0.08)';">
+            <div style="font-size:48px; margin-bottom:16px;">{icon}</div>
+            <h3 style="color:{color}; font-size:20px; margin:0 0 14px;
+                font-family:'Cairo',sans-serif; font-weight:800;">{title}</h3>
+            <p style="color:var(--nbe-gray); font-size:15px;
+                line-height:1.8; margin:0; font-weight:500;">{desc}</p>
         </div>
         """, unsafe_allow_html=True)
 
 st.markdown("---")
 
 # ============================================================
-# QUICK START GUIDE - Light Theme Optimized
+# QUICK START GUIDE
 # ============================================================
-st.markdown("""
-<h2 style="color:#003d28; font-family:'Cairo',sans-serif;
-    font-size:28px; margin-top:40px; margin-bottom:20px; text-align:right;">
-    🚀 دليل البدء السريع
+st.markdown(f"""
+<h2 style="color:var(--nbe-dark-green); font-family:'Playfair Display',serif;
+    font-size:32px; margin-bottom:25px; text-align:{text_align}; font-weight:900;">
+    🚀 {t['quickstart']}
 </h2>
 """, unsafe_allow_html=True)
 
 steps = [
-    ("01", "🎯 Risk Assessment", "انتقل إلى صفحة تقييم المخاطر من القائمة الجانبية"),
-    ("02", "📋 Fill Details",    "أدخل معلومات العميل في النموذج المخصص"),
-    ("03", "🔍 Get Decision",    "اضغط على تقييم المخاطر للحصول على تنبؤ فوري"),
-    ("04", "📊 View Analytics",  "استكشف رؤى المحفظة في صفحة التحليلات"),
+    ("01", "🎯", t['step1'], t['step1_desc']),
+    ("02", "📋", t['step2'], t['step2_desc']),
+    ("03", "🔍", t['step3'], t['step3_desc']),
+    ("04", "📊", t['step4'], t['step4_desc']),
 ]
-
 s1, s2, s3, s4 = st.columns(4)
-
-for col, (num, title, desc) in zip([s1, s2, s3, s4], steps):
+for col, (num, icon, title, desc) in zip([s1,s2,s3,s4], steps):
     with col:
         st.markdown(f"""
         <div style="
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-top: 4px solid #003d28; /* لمسة خضراء من الأعلى */
-            border-radius: 12px;
-            padding: 25px 15px;
+            background: var(--nbe-white);
+            border: 2px solid rgba(0,99,65,0.15);
+            border-radius: 18px;
+            padding: 28px 20px;
             text-align: center;
-            height: 220px; /* توحيد الارتفاع */
+            height: 100%;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        ">
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+        " onmouseover="this.style.transform='translateY(-8px)';this.style.borderColor='var(--nbe-gold)';"
+           onmouseout="this.style.transform='translateY(0)';this.style.borderColor='rgba(0,99,65,0.15)';">
             <div style="
-                width:50px; height:50px;
-                background: linear-gradient(135deg, #003d28, #006341);
+                width:70px; height:70px;
+                background: linear-gradient(135deg, var(--nbe-gold), #b8962e);
                 border-radius: 50%;
                 display: flex; align-items: center; justify-content: center;
-                font-size: 18px; font-weight: 700;
-                color: #D4AF37;
-                margin: 0 auto 15px;
+                font-size: 24px; font-weight: 800;
+                color: var(--nbe-white);
+                margin: 0 auto 18px;
                 font-family: 'Cairo', sans-serif;
-                box-shadow: 0 4px 10px rgba(0,61,40,0.2);
+                box-shadow: 0 8px 25px rgba(212,175,55,0.4);
             ">{num}</div>
-            <h4 style="color:#003d28; font-size:17px; margin:0 0 12px;
-                font-family:'Cairo',sans-serif; font-weight:700;">{title}</h4>
-            <p style="color:#555555; font-size:14px;
-                margin:0; line-height:1.5; font-family:'Cairo',sans-serif;">{desc}</p>
+            <div style="font-size:40px; margin-bottom:12px;">{icon}</div>
+            <h4 style="color:var(--nbe-dark-green); font-size:17px; margin:0 0 12px;
+                font-family:'Cairo',sans-serif; font-weight:800;">{title}</h4>
+            <p style="color:var(--nbe-gray); font-size:14px;
+                margin:0; line-height:1.7; font-weight:500;">{desc}</p>
         </div>
         """, unsafe_allow_html=True)
-# ============================================================
-# TECHNOLOGY & STATS SECTION - Horizontal & High Contrast
-# ============================================================
-st.markdown("<br>", unsafe_allow_html=True)
 
-# تقسيم الصفحة لعرض التكنولوجيا والنتائج جنب بعض
-c1, c2 = st.columns([1.2, 1])
+st.markdown("---")
+
+# ============================================================
+# TECH & PERFORMANCE SECTION
+# ============================================================
+c1, c2 = st.columns(2)
 
 with c1:
-    st.markdown("""
-    <div style="background:#ffffff; border:1px solid #eef2f1; border-radius:16px; padding:25px; height:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-        <h3 style="color:#003d28; font-family:'Cairo',serif; font-size:22px; margin-bottom:20px; display:flex; align-items:center; gap:10px;">
-            🔧 <span style="border-bottom: 3px solid #D4AF37;">Technology Stack</span>
-        </h3>
-        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+    st.markdown(f"""
+    <div style="background:var(--nbe-white);border:2px solid rgba(0,99,65,0.1);
+        border-radius:18px;padding:32px;height:100%;text-align:{text_align};">
+        <h3 style="color:var(--nbe-dark-green);font-family:'Playfair Display',serif;
+            font-size:26px;margin-bottom:24px;font-weight:900;">{t['tech_stack']}</h3>
     """, unsafe_allow_html=True)
 
-    # قائمة التكنولوجيا بالألوان الداكنة الواضحة
     techs = [
-        ("🐍", "Python 3.11",     "#003d28"),
-        ("🌊", "Streamlit",       "#006341"),
+        ("🐍", "Python 3.11",     "#15803d"),
+        ("🌊", "Streamlit",       "#1d4ed8"),
         ("🤖", "scikit-learn",    "#D4AF37"),
-        ("📊", "Plotly",          "#2c3e50"),
-        ("🐼", "Pandas",          "#1f77b4"),
-        ("🔢", "NumPy",           "#d62728"),
+        ("📊", "Plotly",          "#7c3aed"),
+        ("🐼", "Pandas",          "#ea580c"),
+        ("🔢", "NumPy",           "#be185d"),
     ]
-    
     for icon, name, color in techs:
         st.markdown(f"""
-        <div style="display:flex; align-items:center; gap:8px; 
-            padding:8px 15px; border-radius:50px; 
-            background:#f8f9fa; 
-            border:1px solid {color}44; /* لون شفاف خفيف للإطار */
-            ">
-            <span style="font-size:18px;">{icon}</span>
-            <span style="color:{color}; font-weight:700; font-size:14px;">{name}</span>
+        <div style="display:flex;align-items:center;gap:16px;
+            padding:14px 18px;border-radius:12px;
+            background:rgba(0,99,65,0.03);
+            border:2px solid rgba(0,99,65,0.08);
+            margin-bottom:12px;">
+            <span style="font-size:28px;">{icon}</span>
+            <span style="color:{color};font-weight:700;font-size:16px;">{name}</span>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("</div></div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with c2:
-    st.markdown("""
-    <div style="background:#003d28; border-radius:16px; padding:25px; height:100%; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <h3 style="color:#D4AF37; font-family:'Cairo',serif; font-size:22px; margin-bottom:20px;">
-            📊 Performance Metrics
-        </h3>
+    st.markdown(f"""
+    <div style="background:var(--nbe-white);border:2px solid rgba(0,99,65,0.1);
+        border-radius:18px;padding:32px;height:100%;text-align:{text_align};">
+        <h3 style="color:var(--nbe-dark-green);font-family:'Playfair Display',serif;
+            font-size:26px;margin-bottom:24px;font-weight:900;">{t['performance']}</h3>
     """, unsafe_allow_html=True)
 
     stats = [
-        ("Test Accuracy",     "76.50%",   "#D4AF37"),
-        ("Precision",         "64.4%",    "#4ade80"),
-        ("Recall",            "48.3%",    "#60a5fa"),
-        ("F1-Score",          "55.2%",    "#a78bfa"),
-        ("False Negatives",   "31 cases", "#f87171"),
+        (t['test_accuracy'],     "76.50%",   "#D4AF37"),
+        (t['precision'],         "64.4%",    "#15803d"),
+        (t['recall'],            "48.3%",    "#1d4ed8"),
+        (t['f1_score'],          "55.2%",    "#7c3aed"),
+        (t['false_negatives'],   "31",       "#dc2626"),
+        (t['training_time'],     "< 1 min",  "#ea580c"),
     ]
-    
     for label, value, color in stats:
         st.markdown(f"""
-        <div style="display:flex; justify-content:space-between; align-items:center; 
-            padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1);">
-            <span style="color:rgba(255,255,255,0.8); font-size:14px;">{label}</span>
-            <span style="color:{color}; font-weight:700; font-size:16px;">{value}</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;
+            padding:14px 18px;border-radius:12px;
+            background:rgba(0,99,65,0.03);
+            border:2px solid rgba(0,99,65,0.08);
+            margin-bottom:12px;">
+            <span style="color:var(--nbe-gray);font-size:15px;font-weight:600;">{label}</span>
+            <span style="color:{color};font-weight:800;font-size:17px;">{value}</span>
         </div>
         """, unsafe_allow_html=True)
-    
     st.markdown("</div>", unsafe_allow_html=True)
+
 # ============================================================
-# FOOTER - DEVELOPER CARD (Optimized for Visibility)
+# FOOTER
 # ============================================================
-st.markdown("<br><br>", unsafe_allow_html=True)
 st.markdown("---")
 st.markdown(f"""
 <div style="
-    background: #ffffff;
-    border: 1px solid #eef2f1;
+    background: linear-gradient(135deg, var(--nbe-dark-green), var(--nbe-green));
+    border: 2px solid var(--nbe-gold);
     border-radius: 20px;
-    padding: 30px 40px;
+    padding: 40px 45px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 24px;
-    box-shadow: 0 10px 30px rgba(0,61,40,0.08); /* ظل أخضر خفيف جداً */
+    gap: 28px;
+    box-shadow: 0 15px 50px rgba(0,77,52,0.25);
+    text-align: {text_align};
 ">
     <div>
-        <div style="color:#003d28; font-weight:700; font-size:20px;
-            font-family:'Cairo',sans-serif; margin-bottom:5px;">
-            🏦 NBE Credit Risk Intelligence
+        <div style="color:var(--nbe-gold); font-weight:800; font-size:20px;
+            font-family:'Cairo',sans-serif; margin-bottom:10px;">
+            🏦 {t['footer_title']}
         </div>
-        <div style="color:#666666; font-size:14px; line-height:1.6; font-family:'Cairo',sans-serif;">
-            © 2026 National Bank of Egypt<br>
-            Developed by <strong style="color:#D4AF37;">ENG. GODA EMAD</strong> | Version 3.0
+        <div style="color:rgba(255,255,255,0.85); font-size:15px; line-height:1.8; font-weight:500;">
+            {t['footer_bank']}<br>
+            {t['footer_rights']}<br>
+            {t['footer_dev']} <strong style="color:var(--nbe-gold);">ENG. Goda Emad</strong> | {t['footer_version']}
         </div>
     </div>
-    
-    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
         <a href="https://www.linkedin.com/in/goda-emad/"
            target="_blank" style="
-            background: #0a66c2;
-            color: #ffffff;
-            padding: 10px 22px;
+            background: rgba(10,102,194,0.25);
+            border: 2px solid rgba(10,102,194,0.6);
+            color: #60a5fa;
+            padding: 12px 24px;
             border-radius: 12px;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             font-family: 'Cairo', sans-serif;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(10,102,194,0.2);
-        ">
-            🔗 LinkedIn Profile
+            transition: all 0.3s;
+            display: inline-block;
+        " onmouseover="this.style.background='rgba(10,102,194,0.4)';this.style.transform='translateY(-3px)';"
+           onmouseout="this.style.background='rgba(10,102,194,0.25)';this.style.transform='translateY(0)';">
+           🔗 LinkedIn - ENG.Goda Emad
         </a>
-        
         <a href="https://github.com/Goda-Emad/NBE-Credit-Risk-Intelligence-"
            target="_blank" style="
-            background: #24292e;
-            color: #ffffff;
-            padding: 10px 22px;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: var(--nbe-white);
+            padding: 12px 24px;
             border-radius: 12px;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             font-family: 'Cairo', sans-serif;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        ">
-            ⭐ GitHub Project
+            transition: all 0.3s;
+            display: inline-block;
+        " onmouseover="this.style.background='rgba(255,255,255,0.25)';this.style.transform='translateY(-3px)';"
+           onmouseout="this.style.background='rgba(255,255,255,0.15)';this.style.transform='translateY(0)';">
+           ⭐ GitHub Project
         </a>
     </div>
 </div>
