@@ -141,17 +141,25 @@ OPTIONS = {
 def make_label(d): return list(d.values())
 def get_key(d, v): return list(d.keys())[list(d.values()).index(v)]
 
-# ── CSS ───────────────────────────────────────────────────────
+# ── CSS — يشتغل في light و dark معاً ──────────────────────────
 css = (
     '@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900'
     '&family=Cairo:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap");'
-    ':root {'
-    '  --gold:#C9A84C; --gold-l:#E8C97A;'
-    '  --bg:#001f15; --border:rgba(201,168,76,0.25); --gray:#8a9bb0;'
+    ':root{'
+    '  --gold:#C9A84C;--gold-l:#E8C97A;'
+    '  --bg:#001f15;--border:rgba(201,168,76,0.25);'
+    '  --text-main:#1a1a1a;--text-sub:#444;--text-muted:#666;'
+    '  --card-bg:#ffffff;--card-border:rgba(0,99,65,0.15);'
+    '  --input-bg:#f8f8f8;--input-border:rgba(201,168,76,0.3);'
     '}'
-    'html,body,[class*="css"]{'
-    f'  font-family:Cairo,sans-serif!important;'
-    f'  background:#001f15!important;color:#fff!important;direction:{direction};}}'
+    '@media (prefers-color-scheme: dark){'
+    '  :root{'
+    '    --text-main:#ffffff;--text-sub:rgba(255,255,255,0.85);--text-muted:rgba(255,255,255,0.5);'
+    '    --card-bg:rgba(255,255,255,0.04);--card-border:rgba(201,168,76,0.2);'
+    '    --input-bg:rgba(255,255,255,0.05);--input-border:rgba(201,168,76,0.2);'
+    '  }'
+    '}'
+    f'html,body,[class*="css"]{{font-family:Cairo,sans-serif!important;direction:{direction};}}'
     '#MainMenu,footer,header{visibility:hidden}'
     '.block-container{padding:1rem 2rem 3rem!important;max-width:1400px}'
     '[data-testid="stSidebar"]{'
@@ -165,20 +173,20 @@ css = (
     '  background:rgba(255,255,255,0.08)!important;'
     '  border:1px solid rgba(201,168,76,0.35)!important;border-radius:10px!important;}'
     '.stSelectbox>div>div,.stNumberInput>div>div>input{'
-    '  background:rgba(255,255,255,0.05)!important;'
-    '  border:1px solid rgba(201,168,76,0.2)!important;'
-    '  border-radius:10px!important;color:#fff!important;}'
-    '.stSelectbox label,.stNumberInput label,.stSlider label{'
-    '  color:rgba(255,255,255,0.75)!important;font-weight:600!important;font-size:13px!important;}'
+    '  background:var(--input-bg)!important;'
+    '  border:1px solid var(--input-border)!important;'
+    '  border-radius:10px!important;}'
+    '.stSelectbox label,.stNumberInput label{'
+    '  color:var(--text-sub)!important;font-weight:600!important;font-size:13px!important;}'
     '[data-testid="stMetricValue"]{'
     '  color:#C9A84C!important;font-size:2rem!important;'
     '  font-weight:900!important;font-family:JetBrains Mono,monospace!important;'
     '  animation:countAnim 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;}'
-    '[data-testid="stMetricLabel"]{color:#8a9bb0!important;font-size:12px!important;'
+    '[data-testid="stMetricLabel"]{color:var(--text-muted)!important;font-size:12px!important;'
     '  font-weight:700!important;text-transform:uppercase;letter-spacing:0.5px;}'
     '[data-testid="metric-container"]{'
-    '  background:rgba(255,255,255,0.04)!important;'
-    '  border:1px solid rgba(201,168,76,0.2)!important;'
+    '  background:var(--card-bg)!important;'
+    '  border:1px solid var(--card-border)!important;'
     '  border-top:3px solid #C9A84C!important;'
     '  border-radius:14px!important;padding:18px 20px!important;'
     '  transition:transform 0.3s,box-shadow 0.3s!important;}'
@@ -195,6 +203,8 @@ css = (
     '.stButton>button:hover{'
     '  transform:translateY(-3px)!important;'
     '  box-shadow:0 12px 35px rgba(201,168,76,0.6)!important;}'
+    '.sec-card{border-radius:16px;padding:20px 24px;margin-bottom:20px;'
+    '  animation:fadeInUp 0.5s ease backwards;}'
     '@keyframes countAnim{from{opacity:0;transform:scale(0.5) translateY(20px)}'
     '  to{opacity:1;transform:scale(1) translateY(0)}}'
     '@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}'
@@ -204,9 +214,7 @@ css = (
     '@keyframes pulseResult{0%,100%{box-shadow:0 0 20px rgba(201,168,76,0.15)}'
     '  50%{box-shadow:0 0 50px rgba(201,168,76,0.4)}}'
     '@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}'
-    'hr{border-color:rgba(201,168,76,0.15)!important;margin:2rem 0!important;}'
-    '.sec-card{border-radius:16px;padding:20px 24px;margin-bottom:20px;'
-    '  animation:fadeInUp 0.5s ease backwards;}'
+    'hr{border-color:rgba(201,168,76,0.2)!important;margin:2rem 0!important;}'
 )
 st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
 
@@ -223,7 +231,6 @@ with st.sidebar:
         '</div></div>',
         unsafe_allow_html=True
     )
-
     lang_options = {'ar': '🇪🇬 العربية', 'en': '🇬🇧 English'}
     selected = st.selectbox(
         t['lang_label'],
@@ -274,7 +281,7 @@ if model is None:
 # ── Page Header ───────────────────────────────────────────────
 accent = 'right' if is_ar else 'left'
 st.markdown(
-    f'<div style="background:linear-gradient(135deg,rgba(0,18,8,0.95),rgba(0,42,29,0.95));'
+    f'<div style="background:linear-gradient(135deg,#003d2a,#005a3c);'
     f'border:1px solid rgba(201,168,76,0.3);border-{accent}:5px solid #C9A84C;'
     f'border-radius:20px;padding:32px 36px;margin-bottom:28px;'
     f'animation:slideIn 0.6s ease;text-align:{text_align};">'
@@ -283,22 +290,23 @@ st.markdown(
     f'{"البنك الأهلي المصري" if is_ar else "National Bank of Egypt"}</div>'
     f'<h1 style="color:#C9A84C;font-family:Playfair Display,serif;'
     f'font-size:clamp(26px,3vw,38px);margin:0 0 10px;font-weight:900;">🎯 {t["page_title"]}</h1>'
-    f'<p style="color:rgba(255,255,255,0.6);margin:0;font-size:15px;">{t["page_sub"]}</p>'
+    f'<p style="color:rgba(255,255,255,0.75);margin:0;font-size:15px;">{t["page_sub"]}</p>'
     f'</div>',
     unsafe_allow_html=True
 )
 
-# ── Form ──────────────────────────────────────────────────────
+# ── Form Title ────────────────────────────────────────────────
 st.markdown(
-    f'<h2 style="color:#fff;font-family:Cairo,sans-serif;'
+    f'<h2 style="color:#003d2a;font-family:Cairo,sans-serif;'
     f'font-size:20px;margin-bottom:18px;text-align:{text_align};">'
     f'📋 {t["form_title"]}</h2>',
     unsafe_allow_html=True
 )
 
+# ── Section helpers ───────────────────────────────────────────
 def sec_header(icon, title, color, bg, delay):
     st.markdown(
-        f'<div class="sec-card" style="background:{bg};border:1px solid {color}40;'
+        f'<div class="sec-card" style="background:{bg};border:1px solid {color}30;'
         f'border-{accent}:4px solid {color};animation-delay:{delay}s;">'
         f'<h3 style="color:{color};margin:0 0 18px;font-size:16px;font-weight:800;'
         f'font-family:Cairo,sans-serif;text-align:{text_align};">{icon} {title}</h3>',
@@ -308,6 +316,7 @@ def sec_header(icon, title, color, bg, delay):
 def sec_end():
     st.markdown('</div>', unsafe_allow_html=True)
 
+# ── Form ──────────────────────────────────────────────────────
 with st.form('credit_form', clear_on_submit=False):
 
     sec_header('👤', t['sec1'], '#C9A84C', 'rgba(201,168,76,0.06)', 0.0)
@@ -317,18 +326,18 @@ with st.form('credit_form', clear_on_submit=False):
     with c3: foreign  = st.selectbox(t['foreign'],     make_label(OPTIONS['Foreign_Worker']))
     sec_end()
 
-    sec_header('💰', t['sec2'], '#60a5fa', 'rgba(96,165,250,0.05)', 0.1)
+    sec_header('💰', t['sec2'], '#1d6fa8', 'rgba(29,111,168,0.06)', 0.1)
     c1, c2, c3 = st.columns(3)
-    with c1: credit_amount   = st.number_input(t['credit_amount'], 250, 20000, 5000, 100)
-    with c2: duration        = st.number_input(t['duration'],        4,    72,   24)
-    with c3: installment     = st.number_input(t['installment'],     1,     4,    2)
+    with c1: credit_amount    = st.number_input(t['credit_amount'], 250, 20000, 5000, 100)
+    with c2: duration         = st.number_input(t['duration'],        4,    72,   24)
+    with c3: installment      = st.number_input(t['installment'],     1,     4,    2)
     c1, c2, c3 = st.columns(3)
-    with c1: status_account  = st.selectbox(t['account_status'],  make_label(OPTIONS['Status_Account']))
-    with c2: savings         = st.selectbox(t['savings'],          make_label(OPTIONS['Savings']))
+    with c1: status_account   = st.selectbox(t['account_status'],  make_label(OPTIONS['Status_Account']))
+    with c2: savings          = st.selectbox(t['savings'],          make_label(OPTIONS['Savings']))
     with c3: existing_credits = st.number_input(t['existing_credits'], 1, 4, 1)
     sec_end()
 
-    sec_header('🏠', t['sec3'], '#4ade80', 'rgba(74,222,128,0.05)', 0.2)
+    sec_header('🏠', t['sec3'], '#1a7a4a', 'rgba(26,122,74,0.06)', 0.2)
     c1, c2, c3 = st.columns(3)
     with c1: employment = st.selectbox(t['employment'], make_label(OPTIONS['Employment']))
     with c2: housing    = st.selectbox(t['housing'],    make_label(OPTIONS['Housing']))
@@ -339,7 +348,7 @@ with st.form('credit_form', clear_on_submit=False):
     with c3: telephone  = st.selectbox(t['telephone'],  make_label(OPTIONS['Telephone']))
     sec_end()
 
-    sec_header('📄', t['sec4'], '#a78bfa', 'rgba(167,139,250,0.05)', 0.3)
+    sec_header('📄', t['sec4'], '#6d3aad', 'rgba(109,58,173,0.06)', 0.3)
     c1, c2, c3 = st.columns(3)
     with c1: credit_history = st.selectbox(t['credit_history'], make_label(OPTIONS['Credit_History']))
     with c2: purpose        = st.selectbox(t['purpose'],        make_label(OPTIONS['Purpose']))
@@ -406,16 +415,16 @@ if submitted:
     score    = float(proba[1]) * 100
 
     if score >= 70:
-        risk_cat = t['low_risk'];  border_c = '#4ade80'; bg_c = 'rgba(74,222,128,0.08)';  icon = '✅'; decision = t['approved']; rec = t['rec_low']
+        risk_cat = t['low_risk'];  border_c = '#16a34a'; bg_c = 'rgba(22,163,74,0.1)';   icon = '✅'; decision = t['approved']; rec = t['rec_low']
     elif score >= 50:
-        risk_cat = t['med_risk'];  border_c = '#fbbf24'; bg_c = 'rgba(251,191,36,0.08)';  icon = '⚠️'; decision = t['review'];   rec = t['rec_med']
+        risk_cat = t['med_risk'];  border_c = '#d97706'; bg_c = 'rgba(217,119,6,0.1)';   icon = '⚠️'; decision = t['review'];   rec = t['rec_med']
     else:
-        risk_cat = t['high_risk']; border_c = '#f87171'; bg_c = 'rgba(248,113,113,0.08)'; icon = '❌'; decision = t['rejected']; rec = t['rec_high']
+        risk_cat = t['high_risk']; border_c = '#dc2626'; bg_c = 'rgba(220,38,38,0.1)';   icon = '❌'; decision = t['rejected']; rec = t['rec_high']
 
     st.markdown('---')
 
     st.markdown(
-        f'<h2 style="color:#C9A84C;font-family:Playfair Display,serif;'
+        f'<h2 style="color:#003d2a;font-family:Playfair Display,serif;'
         f'font-size:28px;margin-bottom:20px;text-align:{text_align};">'
         f'📊 {t["results_title"]}</h2>',
         unsafe_allow_html=True
@@ -431,11 +440,11 @@ if submitted:
             f'<div style="font-size:72px;margin-bottom:14px;">{icon}</div>'
             f'<div style="color:{border_c};font-size:26px;font-weight:800;'
             f'font-family:Cairo,sans-serif;margin-bottom:10px;">{risk_cat}</div>'
-            f'<div style="color:rgba(255,255,255,0.75);font-size:18px;margin-bottom:20px;">'
+            f'<div style="color:#333;font-size:18px;margin-bottom:20px;">'
             f'{t["decision"]}: <strong style="color:{border_c};font-size:20px;">{decision}</strong></div>'
-            f'<div style="background:rgba(0,0,0,0.25);border-radius:16px;'
+            f'<div style="background:rgba(0,0,0,0.07);border-radius:16px;'
             f'padding:20px;display:inline-block;min-width:200px;">'
-            f'<div style="color:rgba(255,255,255,0.5);font-size:12px;text-transform:uppercase;'
+            f'<div style="color:#555;font-size:12px;text-transform:uppercase;'
             f'letter-spacing:2px;margin-bottom:6px;">{t["risk_score"]}</div>'
             f'<div style="color:{border_c};font-size:52px;font-weight:900;'
             f'font-family:JetBrains Mono,monospace;line-height:1;">{score:.1f}%</div>'
@@ -447,21 +456,21 @@ if submitted:
         with m2: st.metric(t['bad_prob'],  f'{proba[0]*100:.1f}%')
 
     with c2:
-        gc = '#4ade80' if score >= 70 else ('#fbbf24' if score >= 50 else '#f87171')
+        gc = '#16a34a' if score >= 70 else ('#d97706' if score >= 50 else '#dc2626')
         fig = go.Figure(go.Indicator(
             mode='gauge+number',
             value=score,
             number={'suffix':'%', 'font': {'size':40, 'color':gc, 'family':'JetBrains Mono'}},
-            title={'text': t['risk_score'], 'font': {'size':16, 'color':'#ffffff', 'family':'Cairo'}},
+            title={'text': t['risk_score'], 'font': {'size':16, 'color':'#333', 'family':'Cairo'}},
             gauge={
-                'axis': {'range':[0,100], 'tickcolor':'#444', 'tickfont': {'color':'#888'}},
+                'axis': {'range':[0,100], 'tickcolor':'#999', 'tickfont': {'color':'#666'}},
                 'bar':  {'color':gc, 'thickness':0.25},
                 'bgcolor': 'rgba(0,0,0,0)',
-                'bordercolor': '#2a2a2a',
+                'bordercolor': '#ddd',
                 'steps': [
-                    {'range':[0,50],   'color':'rgba(248,113,113,0.12)'},
-                    {'range':[50,70],  'color':'rgba(251,191,36,0.12)'},
-                    {'range':[70,100], 'color':'rgba(74,222,128,0.12)'},
+                    {'range':[0,50],   'color':'rgba(220,38,38,0.1)'},
+                    {'range':[50,70],  'color':'rgba(217,119,6,0.1)'},
+                    {'range':[70,100], 'color':'rgba(22,163,74,0.1)'},
                 ],
                 'threshold': {
                     'line': {'color':gc, 'width':5},
@@ -473,7 +482,7 @@ if submitted:
             height=320,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font={'color':'#fff','family':'Cairo'},
+            font={'color':'#333','family':'Cairo'},
             margin=dict(t=50,b=10,l=20,r=20)
         )
         st.plotly_chart(fig, use_container_width=True)
@@ -481,32 +490,32 @@ if submitted:
         good_w = f'{proba[1]*100:.1f}'
         bad_w  = f'{proba[0]*100:.1f}'
         st.markdown(
-            f'<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);'
+            f'<div style="background:rgba(0,0,0,0.04);border:1px solid rgba(201,168,76,0.2);'
             f'border-radius:16px;padding:20px;margin-top:8px;">'
             f'<div style="margin-bottom:14px;">'
             f'<div style="display:flex;justify-content:space-between;margin-bottom:6px;">'
-            f'<span style="color:#4ade80;font-size:13px;font-weight:700;">✅ {t["good_prob"]}</span>'
-            f'<span style="color:#4ade80;font-weight:800;font-family:JetBrains Mono,monospace;">{good_w}%</span></div>'
-            f'<div style="height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;">'
+            f'<span style="color:#16a34a;font-size:13px;font-weight:700;">✅ {t["good_prob"]}</span>'
+            f'<span style="color:#16a34a;font-weight:800;font-family:JetBrains Mono,monospace;">{good_w}%</span></div>'
+            f'<div style="height:10px;background:rgba(0,0,0,0.08);border-radius:5px;overflow:hidden;">'
             f'<div style="height:10px;width:{good_w}%;background:linear-gradient(90deg,#15803d,#4ade80);border-radius:5px;"></div></div></div>'
             f'<div>'
             f'<div style="display:flex;justify-content:space-between;margin-bottom:6px;">'
-            f'<span style="color:#f87171;font-size:13px;font-weight:700;">❌ {t["bad_prob"]}</span>'
-            f'<span style="color:#f87171;font-weight:800;font-family:JetBrains Mono,monospace;">{bad_w}%</span></div>'
-            f'<div style="height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;">'
+            f'<span style="color:#dc2626;font-size:13px;font-weight:700;">❌ {t["bad_prob"]}</span>'
+            f'<span style="color:#dc2626;font-weight:800;font-family:JetBrains Mono,monospace;">{bad_w}%</span></div>'
+            f'<div style="height:10px;background:rgba(0,0,0,0.08);border-radius:5px;overflow:hidden;">'
             f'<div style="height:10px;width:{bad_w}%;background:linear-gradient(90deg,#991b1b,#f87171);border-radius:5px;"></div></div></div>'
             f'</div>',
             unsafe_allow_html=True
         )
 
     st.markdown(
-        f'<div style="background:rgba(255,255,255,0.03);border:1px solid {border_c}40;'
+        f'<div style="background:{bg_c};border:1px solid {border_c}50;'
         f'border-{accent}:5px solid {border_c};border-radius:16px;'
         f'padding:22px 28px;margin-top:20px;animation:fadeInUp 0.6s ease;">'
         f'<div style="color:{border_c};font-size:13px;font-weight:700;'
         f'text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">'
         f'💡 {t["rec_label"]}</div>'
-        f'<div style="color:rgba(255,255,255,0.85);font-size:15px;line-height:1.8;">{rec}</div>'
+        f'<div style="color:#1a1a1a;font-size:15px;line-height:1.8;font-weight:500;">{rec}</div>'
         f'</div>',
         unsafe_allow_html=True
     )
@@ -514,11 +523,11 @@ if submitted:
 # ── Footer ────────────────────────────────────────────────────
 st.markdown('---')
 st.markdown(
-    f'<div style="background:linear-gradient(135deg,#001208,#001f15);'
-    f'border:1px solid rgba(201,168,76,0.2);border-radius:16px;'
+    f'<div style="background:linear-gradient(135deg,#003d2a,#005a3c);'
+    f'border:1px solid rgba(201,168,76,0.3);border-radius:16px;'
     f'padding:24px 32px;display:flex;flex-wrap:wrap;'
     f'justify-content:space-between;align-items:center;gap:16px;">'
-    f'<div style="color:rgba(255,255,255,0.4);font-size:13px;">{t["footer_copy"]}</div>'
+    f'<div style="color:rgba(255,255,255,0.6);font-size:13px;">{t["footer_copy"]}</div>'
     f'<div style="display:flex;gap:10px;">'
     f'<a href="https://www.linkedin.com/in/goda-emad/" target="_blank" style="'
     f'background:rgba(10,102,194,0.2);border:1px solid rgba(10,102,194,0.4);'
@@ -527,11 +536,11 @@ st.markdown(
     f'onmouseover="this.style.background=\'rgba(10,102,194,0.35)\';"'
     f'onmouseout="this.style.background=\'rgba(10,102,194,0.2)\';">🔗 LinkedIn</a>'
     f'<a href="https://github.com/Goda-Emad/NBE-Credit-Risk-Intelligence-" target="_blank" style="'
-    f'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);'
-    f'color:rgba(255,255,255,0.8);padding:8px 16px;border-radius:10px;text-decoration:none;'
+    f'background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);'
+    f'color:#fff;padding:8px 16px;border-radius:10px;text-decoration:none;'
     f'font-size:13px;font-weight:600;"'
-    f'onmouseover="this.style.background=\'rgba(255,255,255,0.12)\';"'
-    f'onmouseout="this.style.background=\'rgba(255,255,255,0.05)\';">⭐ GitHub</a>'
+    f'onmouseover="this.style.background=\'rgba(255,255,255,0.2)\';"'
+    f'onmouseout="this.style.background=\'rgba(255,255,255,0.1)\';">⭐ GitHub</a>'
     f'</div></div>',
     unsafe_allow_html=True
 )
